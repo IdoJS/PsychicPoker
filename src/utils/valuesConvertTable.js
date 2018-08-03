@@ -11,7 +11,8 @@ const valueMapping = {
   10: "T"
 };
 
-const getValue = value => {
+const getValue = card => {
+  let value = card[0];
   return valueMapping[value] || value;
 };
 
