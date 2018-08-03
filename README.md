@@ -1,2 +1,0 @@
-# PsychicPoker
-Created with CodeSandbox
