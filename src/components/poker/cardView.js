@@ -8,11 +8,12 @@ const CardView = props => {
       <div
         key={key}
         onClick={props.removeCard}
-        className={
-          props.blinkList.indexOf(value) !== -1
-            ? `card_blink_${props.type}`
-            : ""
-        }
+        className={`card_view_border 
+          ${
+            props.blinkList.indexOf(value) !== -1
+              ? `card_blink_${props.type}`
+              : ""
+          }`}
       >
         <span data-type={props.type}>{value}</span>
       </div>

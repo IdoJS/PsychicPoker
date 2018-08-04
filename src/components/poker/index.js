@@ -13,7 +13,8 @@ class Poker extends React.Component {
     deck: [],
     handBlink: [],
     deckBlink: [],
-    bestHand: 15
+    bestHand: 15,
+    cardsBestHand: []
   };
 
   componentWillMount() {
@@ -24,7 +25,8 @@ class Poker extends React.Component {
     return (
       <div className="pages poker">
         <div onClick={this.drawNewCards.bind(this)}>
-          best hand {rankTable[this.state.bestHand]}
+          best hand {rankTable[this.state.bestHand]}{" "}
+          {this.state.cardsBestHand.join(", ")}
         </div>
         <div>
           <CardView
@@ -45,16 +47,6 @@ class Poker extends React.Component {
     );
   }
 
-  componentDidMount() {
-    const { hand, deck } = this.state;
-    let result = manageCards(hand, deck);
-    let { takeFromDeck, removeFromUser } = result;
-    this.setState({
-      handBlink: removeFromUser,
-      deckBlink: takeFromDeck,
-      bestHand: result.rank
-    });
-  }
   removeCard(ev) {
     const value = ev.target.innerText;
     const type = ev.target.getAttribute("data-type");
@@ -88,13 +80,13 @@ class Poker extends React.Component {
     const deck = cards.slice(5, 10);
     const result = manageCards(hand, deck);
     let { takeFromDeck, removeFromUser } = result;
-    console.log(result, cards);
     this.setState({
       handBlink: removeFromUser,
       deckBlink: takeFromDeck,
       bestHand: result.rank,
       hand,
-      deck
+      deck,
+      cardsBestHand: result.bestHand
     });
   }
 }

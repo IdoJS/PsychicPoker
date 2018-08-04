@@ -14,7 +14,8 @@ const manageCards = (hand = [], deck = []) => {
   return {
     removeFromUser,
     takeFromDeck: result.takeFromDeck || [],
-    rank: result.rank
+    rank: result.rank,
+    bestHand: result.cards
   };
 };
 
