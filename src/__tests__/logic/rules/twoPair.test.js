@@ -1,4 +1,5 @@
 import { isTwoPair } from "../../../logic/rules/twoPair";
+import { findBestHand } from "../../../logic/bestHand";
 
 describe("Check isOnePair", () => {
   let hand = [];

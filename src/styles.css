@@ -1,4 +1,137 @@
-.App {
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html,
+body,
+div,
+span,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+a,
+em,
+img,
+b,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+body {
+  line-height: 1;
+}
+ol,
+ul {
+  list-style: none;
+}
+
+*,
+:before,
+:after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root,
+.app {
+  height: 100%;
+}
+body {
+  background-color: gray;
   font-family: sans-serif;
-  text-align: center;
+  size: 16px;
+}
+
+.app {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+}
+
+.pages.poker {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card_view {
+  flex-direction: row;
+  margin-top: 20px;
+}
+
+.card_view_cards_hand {
+  display: flex;
+  justify-content: space-around;
+}
+
+.card_view_cards_deck {
+  display: flex;
+  flex-direction: column;
+}
+
+.card_blink_hand {
+  background-color: red;
+  animation: blinker 2s linear infinite;
+}
+
+.card_blink_deck {
+  /* background-color: red; */
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
 }

@@ -13,7 +13,8 @@ import constants from "../utils/constants";
 const findBestHand = (hand = [], deck = []) => {
   let bestResult = {
     rank: 15,
-    highest: 0
+    highest: 0,
+    takeFromDeck: []
   };
   let result;
   bestResult = checkAllPossibleHandType(hand, []);
@@ -23,6 +24,7 @@ const findBestHand = (hand = [], deck = []) => {
     result = checkAllPossibleHandType(hand, replaceFromDeck);
     if (result.rank < bestResult.rank) {
       bestResult = Object.assign({}, result);
+      bestResult.takeFromDeck = replaceFromDeck;
     } else if (result.rank === bestResult.rank) {
       switch (result.rank) {
         case constants.NAME_TO_RANK.STRAIGHT_FLUSH:
@@ -35,18 +37,21 @@ const findBestHand = (hand = [], deck = []) => {
         case constants.NAME_TO_RANK.FULL_HOUSE:
           if (result.highest > bestResult.highest) {
             bestResult = Object.assign({}, result);
+            bestResult.takeFromDeck = replaceFromDeck;
           }
           break;
 
         case constants.NAME_TO_RANK.TWO_PAIR:
           if (result.highPair.value > bestResult.highPair.value) {
             bestResult = Object.assign({}, result);
+            bestResult.takeFromDeck = replaceFromDeck;
           }
           if (
             result.highPair.value === bestResult.highPair.value &&
             result.lowPair.value > bestResult.lowPair.value
           ) {
             bestResult = Object.assign({}, result);
+            bestResult.takeFromDeck = replaceFromDeck;
           }
           break;
         default:

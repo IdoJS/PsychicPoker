@@ -1,4 +1,5 @@
 import { isOnePair } from "../../../logic/rules/onePair";
+import { manageCards } from "../../../logic/manageCards";
 
 describe("Check isOnePair", () => {
   let hand = [];
@@ -52,5 +53,12 @@ describe("Check isOnePair", () => {
     expect(result.rank).toBe(15);
     expect(result.highest).toBe(0);
     expect(JSON.stringify(result.cards)).toBe('["2H","8D","4C","9S","AH"]');
+  });
+
+  it("[KH, 3H, 8S, 2H, 3S, AC, 7D, 2D, 8H, 2C]", () => {
+    hand = ["KH", "3H", "8S", "2H", "3S"];
+    replace = ["AC", "7D", "2D", "8H", "2C"];
+    result = manageCards(hand, replace);
+    console.log("isTwoPair result", result);
   });
 });
