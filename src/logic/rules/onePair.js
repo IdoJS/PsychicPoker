@@ -24,7 +24,9 @@ const isOnePair = (userCards = [], replaceFromDeck = []) => {
 
       if (valueI === valueJ) {
         if (pairs.value < valueI) {
-          pairs.cards = [...replaceFromDeck, cardList[i]];
+          if (replaceFromDeck.indexOf(cardList[i]) === -1) {
+            pairs.cards = [...replaceFromDeck, cardList[i]];
+          }
           if (pairs.cards.length > 5) {
             // incorrect result
             pairs.cards = replaceFromDeck;
