@@ -1,5 +1,6 @@
 import baseResult from "../../utils/baseResult";
 import { getValue } from "../../utils/valuesConvertTable";
+import { combineGenerator } from "../../utils/combinations";
 /**
  * input - userCards :5 cards
  *        replaceFromDeck: [1..5] cards
@@ -7,145 +8,150 @@ import { getValue } from "../../utils/valuesConvertTable";
  */
 
 const isTwoPair = (userCards = [], replaceFromDeck = []) => {
-  let cardList = userCards.concat(replaceFromDeck);
+  let replaceFromDeckLength = replaceFromDeck.length;
   let pairs = {
     highPair: {
       value: 0,
-      positionI: -1,
-      positionJ: -1
+      positionN: -1,
+      positionM: -1
     },
     lowPair: {
       value: 0,
-      positionI: -1,
-      positionJ: -1
+      positionN: -1,
+      positionM: -1
     },
     cards: [],
     rank: 15,
     hightest: 0
   };
 
-  // find all pairs
-  for (let i = 0; i < cardList.length - 2; i++) {
-    let valueI = getValue(cardList[i]);
+  if (replaceFromDeck.length === 0) {
+    pairs = searchOnList(pairs, userCards);
+  } else if (replaceFromDeck.length === 5) {
+    pairs = searchOnList(pairs, replaceFromDeck);
+  } else {
+    pairs = combinationsSearch(
+      pairs,
+      userCards,
+      replaceFromDeck,
+      replaceFromDeckLength
+    );
+  }
+  return Object.assign({}, baseResult, pairs);
+};
 
-    for (let j = i + 1; j < cardList.length && j - i <= 5; j++) {
-      let valueJ = getValue(cardList[j]);
-      console.log("test", i, j, valueI, valueJ);
-      let rangeList = [];
-      if (valueI === valueJ) {
-        if (pairs.highPair.value < valueI) {
-          rangeList = addNotImportentCardsFromUser(
-            cardList,
-            replaceFromDeck,
-            i, // highCardPositionI
-            j, // highCardPositionJ
-            pairs.highPair.positionI, // lowCardPositionI
-            pairs.highPair.positionJ // lowCardPositionJ
-          );
+const searchForPairs = list => {
+  let pairs = {
+    highPair: {
+      value: -1,
+      positionN: -1,
+      positionM: -1
+    },
+    lowPair: {
+      value: -1,
+      positionN: -1,
+      positionM: -1
+    }
+  };
+  for (let n = 0; n < list.length - 1; n++) {
+    let valueN = getValue(list[n]);
+    for (let m = n + 1; m < list.length; m++) {
+      let valueM = getValue(list[m]);
+      if (valueM === valueN) {
+        if (pairs.highPair.positionN === -1) {
+          pairs.highPair.positionN = n;
+          pairs.highPair.positionM = m;
+          pairs.highPair.value = valueN;
+          pairs.cards = list;
+        } else if (
+          pairs.lowPair.positionN === -1 ||
+          pairs.lowPair.value < valueN
+        ) {
+          // switch between pairs
+          if (pairs.highPair.value < valueN) {
+            // pairs.lowPair.positionN = pairs.highPair.positionN;
+            // pairs.lowPair.positionM = pairs.highPair.positionM;
+            // pairs.lowPair.value = pairs.highPair.value;
 
-          if (rangeList.length <= 5) {
             pairs.lowPair = Object.assign({}, pairs.highPair);
-            pairs.lowPair.value = pairs.highPair.value;
-            pairs.highPair.value = valueI;
-            pairs.highPair.positionI = i;
-            pairs.highPair.positionJ = j;
+            pairs.highPair.positionN = n;
+            pairs.highPair.positionM = m;
+            pairs.highPair.value = valueN;
             pairs.rank = 7;
-            pairs.cards = rangeList;
-          }
-        } else if (pairs.lowPair.value < valueI) {
-          rangeList = addNotImportentCardsFromUser(
-            cardList,
-            replaceFromDeck,
-            i, // highCardPositionI
-            j, // highCardPositionJ
-            pairs.lowPair.positionI, // lowCardPositionI
-            pairs.lowPair.positionJ // lowCardPositionJ
-          );
-          if (rangeList.length <= 5) {
-            pairs.lowPair.value = valueI;
-            pairs.lowPair.positionI = i;
-            pairs.lowPair.positionJ = j;
-            pairs.rank = 7;
-            pairs.cards = rangeList;
+            pairs.cards = list;
+          } else {
+            pairs.lowPair.positionN = n;
+            pairs.lowPair.positionM = m;
+            pairs.lowPair.value = valueN;
+
+            pairs.cards = list;
           }
         }
       }
     }
   }
 
-  pairs.cards = addNotImportentCardsFromUser(
-    userCards.concat(replaceFromDeck),
-    replaceFromDeck,
-    pairs.highPair.positionI, // highCardPositionI
-    pairs.highPair.positionJ, // highCardPositionJ
-    pairs.lowPair.positionI, // lowCardPositionI
-    pairs.lowPair.positionJ // lowCardPositionJ
-  );
-  console.log("baseResult, pairs", baseResult, pairs);
-
-  return Object.assign(baseResult, pairs);
+  return pairs;
 };
 
-const addNotImportentCardsFromUser = (
-  cardList = [],
-  replaceFromDeck = [],
-  highCardPositionI,
-  highCardPositionJ,
-  lowCardPositionI,
-  lowCardPositionJ
-) => {
-  let resultCardList = [...replaceFromDeck];
-
-  if (
-    highCardPositionI >= 0 &&
-    replaceFromDeck.indexOf(cardList[highCardPositionI]) === -1
-  ) {
-    resultCardList.push(cardList[highCardPositionI]);
-  }
-  if (
-    highCardPositionJ >= 0 &&
-    replaceFromDeck.indexOf(cardList[highCardPositionJ]) === -1
-  ) {
-    resultCardList.push(cardList[highCardPositionJ]);
-  }
-
-  if (
-    lowCardPositionI >= 0 &&
-    replaceFromDeck.indexOf(cardList[lowCardPositionI]) === -1
-  ) {
-    resultCardList.push(cardList[lowCardPositionI]);
-  }
-  if (
-    lowCardPositionJ >= 0 &&
-    replaceFromDeck.indexOf(cardList[lowCardPositionJ]) === -1
-  ) {
-    resultCardList.push(cardList[lowCardPositionJ]);
-  }
-  let sizeToRemove = 5 - resultCardList.length;
-  for (let uc = 0; uc < cardList.length && sizeToRemove > 0; uc++) {
+const checkIfBetter = (oldPair, newPair) => {
+  if (oldPair.highPair.value <= newPair.highPair.value) {
+    if (oldPair.highPair.value < newPair.highPair.value) {
+      return true;
+    }
     if (
-      uc !== highCardPositionI &&
-      uc !== highCardPositionJ &&
-      uc !== lowCardPositionI &&
-      uc !== lowCardPositionJ
+      oldPair.highPair.value === newPair.highPair.value &&
+      oldPair.lowPair.value <= newPair.lowPair.value
     ) {
-      if (resultCardList.indexOf(cardList[uc]) === -1) {
-        resultCardList.push(cardList[uc]);
-        sizeToRemove--;
+      return true;
+    }
+  } else {
+    return false;
+  }
+};
+
+const searchOnList = (pairs, list) => {
+  let newPair = searchForPairs(list);
+  if (newPair.highPair.positionM > -1 && newPair.lowPair.positionM > -1) {
+    if (checkIfBetter(pairs, newPair)) {
+      pairs = Object.assign({}, newPair);
+      pairs.rank = 7;
+    }
+  }
+  return pairs;
+};
+
+const combinationsSearch = (
+  pairs,
+  userCards,
+  replaceFromDeck,
+  replaceFromDeckLength
+) => {
+  let combinationsArray = combineGenerator(
+    userCards,
+    5 - replaceFromDeckLength
+  );
+  // builc array size 5 with cards from the replacmentDeck and the additional cards from user
+  for (let i = 0; i < combinationsArray.length; i++) {
+    let additionalCards = combinationsArray[i];
+
+    let searchList =
+      additionalCards === undefined
+        ? replaceFromDeck
+        : replaceFromDeck.concat(combinationsArray[i]);
+
+    if (searchList.length === 5) {
+      let newPair = searchForPairs(searchList);
+
+      if (newPair.highPair.positionM > -1 && newPair.lowPair.positionM > -1) {
+        if (checkIfBetter(pairs, newPair)) {
+          pairs = Object.assign({}, newPair);
+          pairs.rank = 7;
+        }
       }
     }
   }
-  console.log(
-    "resultCardList",
-    cardList,
-    resultCardList,
-    replaceFromDeck,
-    highCardPositionI,
-    highCardPositionJ,
-    lowCardPositionI,
-    lowCardPositionJ
-  );
-  return resultCardList;
-};
 
+  return pairs;
+};
 export { isTwoPair };

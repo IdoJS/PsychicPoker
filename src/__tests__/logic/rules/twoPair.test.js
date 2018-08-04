@@ -5,50 +5,57 @@ describe("Check isOnePair", () => {
   let replace = [];
   let result;
 
-  // it("Hand: 6C 6D 8C 2D 7C Deck: 2H", () => {
-  //   hand = ["6C", "6D", "8C", "2D", "7C"];
-  //   replace = ["2H"];
-  //   result = isTwoPair(hand, replace);
-  //   expect(result.rank).toBe(7);
-  //   expect(JSON.stringify(result.cards)).toBe('["2H","6C","6D","2D","8C"]');
-  // });
-
-  it("Hand: 6C 9C 8C 2D 7C Deck: 2H", () => {
-    hand = ["6C", "9C", "8C", "2D", "7C"];
-    replace = ["2H", "8D"];
+  it("Hand: 6C 6D 8C 2D 7C Deck: ", () => {
+    hand = ["6C", "6D", "8C", "2D", "2C"];
+    replace = [];
     result = isTwoPair(hand, replace);
-    console.log("8", result);
     expect(result.rank).toBe(7);
-    expect(JSON.stringify(result.cards)).toBe('["2H","8D","8C","6C","9C"]');
+    expect(JSON.stringify(result.cards)).toBe('["6C","6D","8C","2D","2C"]');
   });
 
-  // it("Hand: 6C 9C 8C 2D 7C Deck: 2H", () => {
-  //   hand = ["6C", "9C", "8C", "2D", "7C"];
-  //   replace = ["2H", "8D", "4C"];
-  //   result = isOnePair(hand, replace);
+  it("Hand: 6C 6D 8C 2D 7C Deck: 2H", () => {
+    hand = ["6C", "6D", "8C", "2D", "7C"];
+    replace = ["2H"];
+    result = isTwoPair(hand, replace);
+    expect(result.rank).toBe(7);
+    expect(JSON.stringify(result.cards)).toBe('["2H","6C","6D","2D","7C"]');
+  });
 
-  //   expect(result.rank).toBe(8);
-  //   expect(result.hightest).toBe("8");
-  //   expect(JSON.stringify(result.cards)).toBe('["2H","8D","4C","8C","6C"]');
-  // });
+  it("Hand: 6C 6D 8C 2D 7C Deck: 2H", () => {
+    hand = ["6C", "6D", "8C", "2D", "7C"];
+    replace = ["2H", "8D"];
+    result = isTwoPair(hand, replace);
+    expect(result.rank).toBe(7);
+    expect(JSON.stringify(result.cards)).toBe('["2H","8D","6C","6D","8C"]');
+  });
 
-  // it("Hand: 6C 9C 8C 2D 7C Deck: 2H", () => {
-  //   hand = ["6C", "9C", "8C", "2D", "7C"];
-  //   replace = ["2H", "8D", "4C", "9S"];
-  //   result = isOnePair(hand, replace);
+  it("Hand: 6C 6D 8C 2D 7C Deck: 2H", () => {
+    hand = ["6C", "6D", "8C", "2D", "7C"];
+    replace = ["2H", "8D", "7D"];
+    result = isTwoPair(hand, replace);
+    expect(result.rank).toBe(7);
+    expect(JSON.stringify(result.cards)).toBe('["2H","8D","7D","8C","7C"]');
+  });
 
-  //   expect(result.rank).toBe(8);
-  //   expect(result.hightest).toBe("8");
-  //   expect(JSON.stringify(result.cards)).toBe('["2H","8D","4C","9S","8C"]');
-  // });
+  it("Hand: 6C 6D 8C 2D 7C Deck: 2H", () => {
+    hand = ["6C", "6D", "8C", "2D", "7C"];
+    replace = ["2H", "8D", "7D", "AD"];
+    result = isTwoPair(hand, replace);
+    expect(result.rank).toBe(15);
+  });
 
-  // it("Hand: 6C 9C 8C 2D 7C Deck: 2H", () => {
-  //   hand = ["6C", "9C", "8C", "2D", "7C"];
-  //   replace = ["2H", "8D", "4C", "9S", "AH"];
-  //   result = isOnePair(hand, replace);
+  it("Hand: 6C 6D 8C 2D 7C Deck: 2H", () => {
+    hand = ["6C", "6D", "8C", "2D", "7C"];
+    replace = ["2H", "8D", "7D", "AD", "AC"];
+    result = isTwoPair(hand, replace);
+    expect(result.rank).toBe(15);
+  });
 
-  //   expect(result.rank).toBe(15);
-  //   expect(result.hightest).toBe(0);
-  //   expect(JSON.stringify(result.cards)).toBe('["2H","8D","4C","9S","AH"]');
-  // });
+  it("Hand: 6C 6D 8C 2D 7C Deck: 2H", () => {
+    hand = ["6C", "6D", "8C", "2D", "7C"];
+    replace = ["8H", "8D", "7D", "AD", "AC"];
+    result = isTwoPair(hand, replace);
+    expect(result.rank).toBe(7);
+    expect(JSON.stringify(result.cards)).toBe('["8H","8D","7D","AD","AC"]');
+  });
 });

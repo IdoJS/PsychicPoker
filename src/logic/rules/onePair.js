@@ -51,7 +51,7 @@ const isOnePair = (userCards = [], replaceFromDeck = []) => {
   }
   console.log("baseResult, pairs", baseResult, pairs);
 
-  return Object.assign(baseResult, pairs);
+  return Object.assign({}, baseResult, pairs);
 };
 
 export { isOnePair };
