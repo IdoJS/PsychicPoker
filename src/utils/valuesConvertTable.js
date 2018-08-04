@@ -16,4 +16,7 @@ const getValue = card => {
   return valueMapping[value] || value;
 };
 
-export { getValue };
+const getSuit = card => {
+  return card[1];
+};
+export { getValue, getSuit };
