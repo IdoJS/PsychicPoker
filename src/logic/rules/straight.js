@@ -51,24 +51,40 @@ const searchForStraight = list => {
 
   let valueList = [];
   for (let i = 0; i < list.length; i++) {
-    valueList.push(getValue(list[i]));
+    let value = getValue(list[i]);
+    valueList.push(value);
+    if (value === 14) {
+      // its possible to use ace as 1
+      valueList.push("1");
+    }
   }
 
   let sortedList = valueList.sort((a, b) => a - b);
   let isStraightFlag = true;
+  let heighCard = sortedList[sortedList.length - 1];
+  if (sortedList.length === 6) {
+    //[1, "2", "3", "4", "5", 14]
+    if (sortedList[1] === "2") {
+      sortedList = sortedList.slice(0, 5);
+
+      heighCard = "14";
+    } else if (sortedList[4] === "13") {
+      sortedList = sortedList.shift();
+    }
+  }
+
   for (let i = 0; i < sortedList.length - 1; i++) {
     if (sortedList[i + 1] - sortedList[i] !== 1) {
       isStraightFlag = false;
     }
   }
-
   if (isStraightFlag) {
     straight.position1 = sortedList[0];
     straight.position2 = sortedList[1];
     straight.position3 = sortedList[2];
     straight.position4 = sortedList[3];
     straight.position5 = sortedList[4];
-    straight.highest = sortedList[4];
+    straight.highest = heighCard;
     straight.cards = list;
     straight.rank = 5;
   }
@@ -112,7 +128,7 @@ const combinationsSearch = (
 
     if (searchList.length === 5) {
       let newStraight = searchForStraight(searchList);
-      if (newStraight.value > 0) {
+      if (newStraight.highest > 0) {
         if (checkIfBetter(straight, newStraight)) {
           straight = Object.assign({}, newStraight);
           straight.rank = 5;

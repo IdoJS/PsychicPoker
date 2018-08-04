@@ -71,6 +71,18 @@ const searchForFlush = list => {
   if (isSuitFlag) {
     let sortedStraightArray = straightArray.sort((a, b) => a - b);
 
+    let heighCard = sortedStraightArray[sortedStraightArray.length - 1];
+    if (sortedStraightArray.length === 6) {
+      //[1, "2", "3", "4", "5", 14]
+      if (sortedStraightArray[1] === "2") {
+        sortedStraightArray = sortedStraightArray.slice(0, 5);
+
+        heighCard = "14";
+      } else if (sortedStraightArray[4] === "13") {
+        sortedStraightArray = sortedStraightArray.shift();
+      }
+    }
+
     let isStraightFlag = true;
     for (let i = 0; i < sortedStraightArray.length - 1; i++) {
       if (sortedStraightArray[i + 1] - sortedStraightArray[i] !== 1) {
@@ -84,7 +96,7 @@ const searchForFlush = list => {
       straightFlush.position3 = sortedStraightArray[2];
       straightFlush.position4 = sortedStraightArray[3];
       straightFlush.position5 = sortedStraightArray[4];
-      straightFlush.highest = sortedStraightArray[4];
+      straightFlush.highest = heighCard;
       straightFlush.cards = list;
       straightFlush.rank = 1;
     }

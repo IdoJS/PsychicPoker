@@ -28,7 +28,6 @@ const isFlush = (userCards = [], replaceFromDeck = []) => {
       replaceFromDeckLength
     );
   }
-  console.log("searchOnList", flush);
 
   return Object.assign({}, baseResult, flush);
 };
@@ -63,7 +62,6 @@ const searchForFlush = list => {
     flush.cards = list;
     flush.rank = 4;
   }
-  console.log("flush", isSuitFlag, flush);
   return flush;
 };
 
