@@ -43,4 +43,36 @@ describe("mock tests", () => {
     expect(result.rank).toBe(5);
     expect(JSON.stringify(result.cards)).toBe('["5S","4D","AC","2D","3S"]');
   });
+
+  it("Hand: KS AH 2H 3C 4H Deck: KC 2C TC 2D AS Best hand: three-of-a-kind", () => {
+    hand = ["KS", "AH", "2H", "3C", "4H"];
+    deck = ["KC", "2C", "TC", "2D", "AS"];
+    result = findBestHand(hand, deck);
+    expect(result.rank).toBe(6);
+    expect(JSON.stringify(result.cards)).toBe('["KC","2C","TC","2D","2H"]');
+  });
+
+  it("Hand: AH 2C 9S AD 3C Deck: QH KS JS JD KD Best hand: two-pairs", () => {
+    hand = ["AH", "2C", "9S", "AD", "3C"];
+    deck = ["QH", "KS", "JS", "JD", "KD"];
+    result = findBestHand(hand, deck);
+    expect(result.rank).toBe(7);
+    expect(JSON.stringify(result.cards)).toBe('["QH","KS","JS","JD","KD"]');
+  });
+
+  it("Hand: 6C 9C 8C 2D 7C Deck: 2H TC 4C 9S AH Best hand: one-pair", () => {
+    hand = ["6C", "9C", "8C", "2D", "7C"];
+    deck = ["2H", "TC", "4C", "9S", "AH"];
+    result = findBestHand(hand, deck);
+    expect(result.rank).toBe(8);
+    expect(JSON.stringify(result.cards)).toBe('["2H","2D","6C","9C","8C"]');
+  });
+
+  it("Hand: 3D 5S 2H QD TD Deck: 6S KH 9H AD QH Best hand: highest-card", () => {
+    hand = ["3D", "5S", "2H", "QD", "TD"];
+    deck = ["6S", "KH", "9H", "AD", "QH"];
+    result = findBestHand(hand, deck);
+    expect(result.rank).toBe(9);
+    expect(JSON.stringify(result.cards)).toBe('["TD","6S","KH","9H","AD"]');
+  });
 });

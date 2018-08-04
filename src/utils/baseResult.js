@@ -1,5 +1,6 @@
 export default {
   rank: 15,
   cards: [],
-  hightest: 0
+  highest: 0,
+  cardHighValue: 0
 };

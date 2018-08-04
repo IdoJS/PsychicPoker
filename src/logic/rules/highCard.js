@@ -18,7 +18,8 @@ const isHighCard = (userCards = [], replaceFromDeck = []) => {
       highestCard = cardValue;
       result.rank = 9;
       result.cards = userCards;
-      result.hightest = userCards[i];
+      result.highest = highestCard;
+      result.cardHighValue = userCards[i];
     }
   }
   let cardList = userCards.concat(replaceFromDeck);
@@ -29,7 +30,8 @@ const isHighCard = (userCards = [], replaceFromDeck = []) => {
       highestCard = cardValue;
       result.rank = 9;
       result.cards = cardList;
-      result.hightest = replaceFromDeck[i];
+      result.highest = highestCard;
+      result.cardHighValue = replaceFromDeck[i];
     }
     cardList.shift();
   }

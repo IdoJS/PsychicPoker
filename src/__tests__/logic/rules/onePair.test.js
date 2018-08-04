@@ -10,7 +10,7 @@ describe("Check isOnePair", () => {
     replace = ["2H"];
     result = isOnePair(hand, replace);
     expect(result.rank).toBe(8);
-    expect(result.hightest).toBe("2");
+    expect(result.highest).toBe("2");
     expect(JSON.stringify(result.cards)).toBe('["2H","2D","6C","9C","8C"]');
   });
 
@@ -20,7 +20,7 @@ describe("Check isOnePair", () => {
     result = isOnePair(hand, replace);
 
     expect(result.rank).toBe(8);
-    expect(result.hightest).toBe("8");
+    expect(result.highest).toBe("8");
     expect(JSON.stringify(result.cards)).toBe('["2H","8D","8C","6C","9C"]');
   });
 
@@ -30,7 +30,7 @@ describe("Check isOnePair", () => {
     result = isOnePair(hand, replace);
 
     expect(result.rank).toBe(8);
-    expect(result.hightest).toBe("8");
+    expect(result.highest).toBe("8");
     expect(JSON.stringify(result.cards)).toBe('["2H","8D","4C","8C","6C"]');
   });
 
@@ -40,7 +40,7 @@ describe("Check isOnePair", () => {
     result = isOnePair(hand, replace);
 
     expect(result.rank).toBe(8);
-    expect(result.hightest).toBe("8");
+    expect(result.highest).toBe("8");
     expect(JSON.stringify(result.cards)).toBe('["2H","8D","4C","9S","8C"]');
   });
 
@@ -50,7 +50,7 @@ describe("Check isOnePair", () => {
     result = isOnePair(hand, replace);
 
     expect(result.rank).toBe(15);
-    expect(result.hightest).toBe(0);
+    expect(result.highest).toBe(0);
     expect(JSON.stringify(result.cards)).toBe('["2H","8D","4C","9S","AH"]');
   });
 });

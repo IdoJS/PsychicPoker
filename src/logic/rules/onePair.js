@@ -3,7 +3,7 @@ import { getValue } from "../../utils/valuesConvertTable";
 /**
  * input - userCards :5 cards
  *        replaceFromDeck: [1..5] cards
- * output - is high-card & hightest card value & card list
+ * output - is high-card & highest card value & card list
  */
 
 const isOnePair = (userCards = [], replaceFromDeck = []) => {
@@ -12,7 +12,7 @@ const isOnePair = (userCards = [], replaceFromDeck = []) => {
     value: 0,
     cards: [],
     rank: 15,
-    hightest: 0
+    highest: 0
   };
 
   // find all pairs
@@ -39,7 +39,7 @@ const isOnePair = (userCards = [], replaceFromDeck = []) => {
                 sizeToRemove--;
               }
             }
-            pairs.hightest = valueI;
+            pairs.highest = valueI;
             pairs.value = valueI;
             pairs.indexStart = i;
             pairs.indexEnd = j;

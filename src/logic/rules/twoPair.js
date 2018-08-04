@@ -4,7 +4,7 @@ import { combineGenerator } from "../../utils/combinations";
 /**
  * input - userCards :5 cards
  *        replaceFromDeck: [1..5] cards
- * output - is high-card & hightest card value & card list
+ * output - is high-card & highest card value & card list
  */
 
 const isTwoPair = (userCards = [], replaceFromDeck = []) => {
@@ -22,7 +22,7 @@ const isTwoPair = (userCards = [], replaceFromDeck = []) => {
     },
     cards: [],
     rank: 15,
-    hightest: 0
+    highest: 0
   };
 
   if (replaceFromDeck.length === 0) {

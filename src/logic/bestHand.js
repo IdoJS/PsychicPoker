@@ -21,13 +21,6 @@ const findBestHand = (hand = [], deck = []) => {
   for (let i = 1; i <= deck.length; i++) {
     let replaceFromDeck = deck.slice(0, i);
     result = checkAllPossibleHandType(hand, replaceFromDeck);
-    console.log(
-      "findBestHand result",
-      bestResult,
-      result,
-      hand,
-      replaceFromDeck
-    );
     if (result.rank < bestResult.rank) {
       bestResult = Object.assign({}, result);
     } else if (result.rank === bestResult.rank) {
@@ -38,23 +31,25 @@ const findBestHand = (hand = [], deck = []) => {
         case constants.NAME_TO_RANK.HIGH_CARD:
         case constants.NAME_TO_RANK.FLUSH:
         case constants.NAME_TO_RANK.STRAIGHT:
-          console.log("findBestHand", result, bestResult);
+        case constants.NAME_TO_RANK.ONE_PAIR:
+        case constants.NAME_TO_RANK.FULL_HOUSE:
           if (result.highest > bestResult.highest) {
             bestResult = Object.assign({}, result);
           }
           break;
 
         case constants.NAME_TO_RANK.TWO_PAIR:
-          // console.log("findBestHand", result, bestResult);
-          break;
-        case constants.NAME_TO_RANK.ONE_PAIR:
-          // console.log("findBestHand", result, bestResult);
-          break;
-        case constants.NAME_TO_RANK.FULL_HOUSE:
-          // console.log("findBestHand", result, bestResult);
+          if (result.highPair.value > bestResult.highPair.value) {
+            bestResult = Object.assign({}, result);
+          }
+          if (
+            result.highPair.value === bestResult.highPair.value &&
+            result.lowPair.value > bestResult.lowPair.value
+          ) {
+            bestResult = Object.assign({}, result);
+          }
           break;
         default:
-          // console.log("findBestHand - default", result, bestResult);
           break;
       }
     }
