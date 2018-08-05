@@ -33,7 +33,6 @@ const findBestHand = (hand = [], deck = []) => {
         case constants.NAME_TO_RANK.HIGH_CARD:
         case constants.NAME_TO_RANK.FLUSH:
         case constants.NAME_TO_RANK.STRAIGHT:
-        case constants.NAME_TO_RANK.ONE_PAIR:
         case constants.NAME_TO_RANK.FULL_HOUSE:
           if (result.highest > bestResult.highest) {
             bestResult = Object.assign({}, result);
@@ -50,6 +49,12 @@ const findBestHand = (hand = [], deck = []) => {
             result.highPair.value === bestResult.highPair.value &&
             result.lowPair.value > bestResult.lowPair.value
           ) {
+            bestResult = Object.assign({}, result);
+            bestResult.takeFromDeck = replaceFromDeck;
+          }
+          break;
+        case constants.NAME_TO_RANK.ONE_PAIR:
+          if (result.highPair.value > bestResult.highPair.value) {
             bestResult = Object.assign({}, result);
             bestResult.takeFromDeck = replaceFromDeck;
           }

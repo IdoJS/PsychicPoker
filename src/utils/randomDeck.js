@@ -10,7 +10,7 @@ const pickRandom = (numberOfCards = 10) => {
     "8",
     "9",
     "T",
-    "j",
+    "J",
     "Q",
     "K"
   ];

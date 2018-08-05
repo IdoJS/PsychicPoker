@@ -8,11 +8,18 @@ describe("Check isOnePair", () => {
 
   it("Hand: 6C 9C 8C 2D 7C Deck: 2H", () => {
     hand = ["6C", "9C", "8C", "2D", "7C"];
+    replace = [];
+    result = isOnePair(hand, replace);
+    expect(result.rank).toBe(15);
+  });
+
+  it("Hand: 6C 9C 8C 2D 7C Deck: 2H", () => {
+    hand = ["6C", "9C", "8C", "2D", "7C"];
     replace = ["2H"];
     result = isOnePair(hand, replace);
     expect(result.rank).toBe(8);
-    expect(result.highest).toBe("2");
-    expect(JSON.stringify(result.cards)).toBe('["2H","2D","6C","9C","8C"]');
+    expect(result.highPair.value).toBe("2");
+    expect(JSON.stringify(result.cards)).toBe('["2H","9C","8C","2D","7C"]');
   });
 
   it("Hand: 6C 9C 8C 2D 7C Deck: 2H", () => {
@@ -21,8 +28,8 @@ describe("Check isOnePair", () => {
     result = isOnePair(hand, replace);
 
     expect(result.rank).toBe(8);
-    expect(result.highest).toBe("8");
-    expect(JSON.stringify(result.cards)).toBe('["2H","8D","8C","6C","9C"]');
+    expect(result.highPair.value).toBe("8");
+    expect(JSON.stringify(result.cards)).toBe('["2H","8D","8C","2D","7C"]');
   });
 
   it("Hand: 6C 9C 8C 2D 7C Deck: 2H", () => {
@@ -31,8 +38,8 @@ describe("Check isOnePair", () => {
     result = isOnePair(hand, replace);
 
     expect(result.rank).toBe(8);
-    expect(result.highest).toBe("8");
-    expect(JSON.stringify(result.cards)).toBe('["2H","8D","4C","8C","6C"]');
+    expect(result.highPair.value).toBe("8");
+    expect(JSON.stringify(result.cards)).toBe('["2H","8D","4C","8C","7C"]');
   });
 
   it("Hand: 6C 9C 8C 2D 7C Deck: 2H", () => {
@@ -41,8 +48,8 @@ describe("Check isOnePair", () => {
     result = isOnePair(hand, replace);
 
     expect(result.rank).toBe(8);
-    expect(result.highest).toBe("8");
-    expect(JSON.stringify(result.cards)).toBe('["2H","8D","4C","9S","8C"]');
+    expect(result.highPair.value).toBe("9");
+    expect(JSON.stringify(result.cards)).toBe('["2H","8D","4C","9S","9C"]');
   });
 
   it("Hand: 6C 9C 8C 2D 7C Deck: 2H", () => {
@@ -51,14 +58,22 @@ describe("Check isOnePair", () => {
     result = isOnePair(hand, replace);
 
     expect(result.rank).toBe(15);
-    expect(result.highest).toBe(0);
-    expect(JSON.stringify(result.cards)).toBe('["2H","8D","4C","9S","AH"]');
   });
 
   it("[KH, 3H, 8S, 2H, 3S, AC, 7D, 2D, 8H, 2C]", () => {
     hand = ["KH", "3H", "8S", "2H", "3S"];
     replace = ["AC", "7D", "2D", "8H", "2C"];
     result = manageCards(hand, replace);
-    console.log("isTwoPair result", result);
+    expect(result.rank).toBe(8);
+    expect(JSON.stringify(result.bestHand)).toBe('["AC","7D","2D","8H","8S"]');
+  });
+
+  it("Hand: 6C 6D 8C 2D 7C Deck: 2H", () => {
+    hand = ["2H", "8H", "3S", "2C", "TS"];
+    replace = ["JC", "KD", "QC", "7H", "JD"];
+    result = manageCards(hand, replace);
+
+    expect(result.rank).toBe(8);
+    expect(JSON.stringify(result.bestHand)).toBe('["JC","KD","QC","7H","JD"]');
   });
 });
