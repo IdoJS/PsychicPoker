@@ -1,6 +1,6 @@
 import baseResult from "../../utils/baseResult";
 import { getValue, getSuit } from "../../utils/valuesConvertTable";
-import { combineGenerator } from "../../utils/combinations";
+import { combineGenerator, combineSearch } from "../../utils/combinations";
 /**
  * input - userCards :5 cards
  *        replaceFromDeck: [1..5] cards
@@ -26,18 +26,20 @@ const isStraightFlush = (userCards = [], replaceFromDeck = []) => {
   } else if (replaceFromDeck.length === 5) {
     straightFlush = searchOnList(straightFlush, replaceFromDeck);
   } else {
-    straightFlush = combinationsSearch(
+    straightFlush = combineSearch(
       straightFlush,
       userCards,
       replaceFromDeck,
-      replaceFromDeckLength
+      replaceFromDeckLength,
+      callBackToCheckRules,
+      callBackToCheckBetterResult
     );
   }
 
   return Object.assign({}, baseResult, straightFlush);
 };
 
-const searchForFlush = list => {
+const callBackToCheckRules = list => {
   let straightFlush = {
     value: 0,
     position1: -1,
@@ -105,14 +107,14 @@ const searchForFlush = list => {
   return straightFlush;
 };
 
-const checkIfBetter = (oldStraightFlush, newStraightFlush) => {
-  return oldStraightFlush.value <= newStraightFlush.value;
+const callBackToCheckBetterResult = (newStraightFlush, oldStraightFlush) => {
+  return oldStraightFlush.highest <= newStraightFlush.highest;
 };
 
 const searchOnList = (straightFlush, list) => {
-  let newStraightFlush = searchForFlush(list);
+  let newStraightFlush = callBackToCheckRules(list);
   if (newStraightFlush.highest > 0) {
-    if (checkIfBetter(straightFlush, newStraightFlush)) {
+    if (callBackToCheckBetterResult(newStraightFlush, straightFlush)) {
       straightFlush = Object.assign({}, newStraightFlush);
       straightFlush.rank = 1;
     }
@@ -121,36 +123,4 @@ const searchOnList = (straightFlush, list) => {
   return straightFlush;
 };
 
-const combinationsSearch = (
-  straightFlush,
-  userCards,
-  replaceFromDeck,
-  replaceFromDeckLength
-) => {
-  let combinationsArray = combineGenerator(
-    userCards,
-    5 - replaceFromDeckLength
-  );
-  // builc array size 5 with cards from the replacmentDeck and the additional cards from user
-  for (let i = 0; i < combinationsArray.length; i++) {
-    let additionalCards = combinationsArray[i];
-
-    let searchList =
-      additionalCards === undefined
-        ? replaceFromDeck
-        : replaceFromDeck.concat(combinationsArray[i]);
-
-    if (searchList.length === 5) {
-      let newStraightFlush = searchForFlush(searchList);
-      if (newStraightFlush.highest > 0) {
-        if (checkIfBetter(straightFlush, newStraightFlush)) {
-          straightFlush = Object.assign({}, newStraightFlush);
-          straightFlush.rank = 1;
-        }
-      }
-    }
-  }
-
-  return straightFlush;
-};
 export { isStraightFlush };

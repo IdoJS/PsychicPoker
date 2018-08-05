@@ -1,6 +1,6 @@
 import baseResult from "../../utils/baseResult";
 import { getValue } from "../../utils/valuesConvertTable";
-import { combineGenerator } from "../../utils/combinations";
+import { combineGenerator, combineSearch } from "../../utils/combinations";
 /**
  * input - userCards :5 cards
  *        replaceFromDeck: [1..5] cards
@@ -22,17 +22,20 @@ const isHighCard = (userCards = [], replaceFromDeck = []) => {
   } else if (replaceFromDeck.length === 5) {
     highCard = searchOnList(highCard, replaceFromDeck);
   } else {
-    highCard = combinationsSearch(
+    highCard = combineSearch(
       highCard,
       userCards,
       replaceFromDeck,
-      replaceFromDeckLength
+      replaceFromDeckLength,
+      callBackToCheckRules,
+      callBackToCheckBetterResult
     );
   }
+
   return Object.assign({}, baseResult, highCard);
 };
 
-const searchForHighCard = list => {
+const callBackToCheckRules = list => {
   let highCard = {
     cards: [],
     rank: 15,
@@ -55,51 +58,16 @@ const searchForHighCard = list => {
   return highCard;
 };
 
-const checkIfBetter = (oldHighCard, newHighCard) => {
-  return oldHighCard.value <= newHighCard.value;
+const callBackToCheckBetterResult = (newHighCard, oldHighCard) => {
+  return oldHighCard.highest <= newHighCard.highest;
 };
 
 const searchOnList = (highCard, list) => {
-  let newHighCard = searchForHighCard(list);
-  if (newHighCard.value > 0) {
-    if (checkIfBetter(highCard, newHighCard)) {
-      highCard = Object.assign({}, newHighCard);
-      highCard.rank = 9;
-    }
+  let newHighCard = callBackToCheckRules(list);
+  if (callBackToCheckBetterResult(newHighCard, highCard)) {
+    highCard = Object.assign({}, newHighCard);
+    highCard.rank = 9;
   }
-  return highCard;
-};
-
-const combinationsSearch = (
-  highCard,
-  userCards,
-  replaceFromDeck,
-  replaceFromDeckLength
-) => {
-  let combinationsArray = combineGenerator(
-    userCards,
-    5 - replaceFromDeckLength
-  );
-  // builc array size 5 with cards from the replacmentDeck and the additional cards from user
-  for (let i = 0; i < combinationsArray.length; i++) {
-    let additionalCards = combinationsArray[i];
-
-    let searchList =
-      additionalCards === undefined
-        ? replaceFromDeck
-        : replaceFromDeck.concat(combinationsArray[i]);
-
-    if (searchList.length === 5) {
-      let newHighCard = searchForHighCard(searchList);
-      if (newHighCard.value > 0) {
-        if (checkIfBetter(highCard, newHighCard)) {
-          highCard = Object.assign({}, newHighCard);
-          highCard.rank = 9;
-        }
-      }
-    }
-  }
-
   return highCard;
 };
 

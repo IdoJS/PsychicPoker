@@ -1,6 +1,6 @@
 import baseResult from "../../utils/baseResult";
 import { getValue } from "../../utils/valuesConvertTable";
-import { combineGenerator } from "../../utils/combinations";
+import { combineGenerator, combineSearch } from "../../utils/combinations";
 /**
  * input - userCards :5 cards
  *        replaceFromDeck: [1..5] cards
@@ -25,18 +25,20 @@ const isFour = (userCards = [], replaceFromDeck = []) => {
   } else if (replaceFromDeck.length === 5) {
     four = searchOnList(four, replaceFromDeck);
   } else {
-    four = combinationsSearch(
+    four = combineSearch(
       four,
       userCards,
       replaceFromDeck,
-      replaceFromDeckLength
+      replaceFromDeckLength,
+      callBackToCheckRules,
+      callBackToCheckBetterResult
     );
   }
 
   return Object.assign({}, baseResult, four);
 };
 
-const searchForThree = list => {
+const callBackToCheckRules = list => {
   let four = {
     value: 0,
     position1: -1,
@@ -64,7 +66,7 @@ const searchForThree = list => {
       four.position2 = data[key][1];
       four.position3 = data[key][2];
       four.position4 = data[key][3];
-      four.rank = 6;
+      four.rank = 2;
       four.cards = list;
     }
   }
@@ -72,15 +74,15 @@ const searchForThree = list => {
   return four;
 };
 
-const checkIfBetter = (oldFour, newFour) => {
+const callBackToCheckBetterResult = (newFour, oldFour) => {
   return oldFour.value <= newFour.value;
 };
 
 const searchOnList = (four, list) => {
-  let newFour = searchForThree(list);
+  let newFour = callBackToCheckRules(list);
 
   if (newFour.value > 0) {
-    if (checkIfBetter(four, newFour)) {
+    if (callBackToCheckBetterResult(newFour, four)) {
       four = Object.assign({}, newFour);
       four.rank = 2;
     }
@@ -88,37 +90,4 @@ const searchOnList = (four, list) => {
   return four;
 };
 
-const combinationsSearch = (
-  four,
-  userCards,
-  replaceFromDeck,
-  replaceFromDeckLength
-) => {
-  let combinationsArray = combineGenerator(
-    userCards,
-    5 - replaceFromDeckLength
-  );
-  // builc array size 5 with cards from the replacmentDeck and the additional cards from user
-  for (let i = 0; i < combinationsArray.length; i++) {
-    let additionalCards = combinationsArray[i];
-
-    let searchList =
-      additionalCards === undefined
-        ? replaceFromDeck
-        : replaceFromDeck.concat(combinationsArray[i]);
-
-    if (searchList.length === 5) {
-      let newFour = searchForThree(searchList);
-
-      if (newFour.value > 0) {
-        if (checkIfBetter(four, newFour)) {
-          four = Object.assign({}, newFour);
-          four.rank = 2;
-        }
-      }
-    }
-  }
-
-  return four;
-};
 export { isFour };

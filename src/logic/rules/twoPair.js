@@ -1,6 +1,6 @@
 import baseResult from "../../utils/baseResult";
 import { getValue } from "../../utils/valuesConvertTable";
-import { combineGenerator } from "../../utils/combinations";
+import { combineGenerator, combineSearch } from "../../utils/combinations";
 /**
  * input - userCards :5 cards
  *        replaceFromDeck: [1..5] cards
@@ -30,17 +30,19 @@ const isTwoPair = (userCards = [], replaceFromDeck = []) => {
   } else if (replaceFromDeck.length === 5) {
     pairs = searchOnList(pairs, replaceFromDeck);
   } else {
-    pairs = combinationsSearch(
+    pairs = combineSearch(
       pairs,
       userCards,
       replaceFromDeck,
-      replaceFromDeckLength
+      replaceFromDeckLength,
+      callBackToCheckRules,
+      callBackToCheckBetterResult
     );
   }
   return Object.assign({}, baseResult, pairs);
 };
 
-const searchForPairs = list => {
+const callBackToCheckRules = list => {
   let pairs = {
     highPair: {
       value: -1,
@@ -83,7 +85,7 @@ const searchForPairs = list => {
             pairs.lowPair.positionN = n;
             pairs.lowPair.positionM = m;
             pairs.lowPair.value = valueN;
-
+            pairs.rank = 7;
             pairs.cards = list;
           }
         }
@@ -94,7 +96,7 @@ const searchForPairs = list => {
   return pairs;
 };
 
-const checkIfBetter = (oldPair, newPair) => {
+const callBackToCheckBetterResult = (newPair, oldPair) => {
   if (oldPair.highPair.value <= newPair.highPair.value) {
     if (oldPair.highPair.value < newPair.highPair.value) {
       return true;
@@ -111,9 +113,9 @@ const checkIfBetter = (oldPair, newPair) => {
 };
 
 const searchOnList = (pairs, list) => {
-  let newPair = searchForPairs(list);
+  let newPair = callBackToCheckRules(list);
   if (newPair.highPair.positionM > -1 && newPair.lowPair.positionM > -1) {
-    if (checkIfBetter(pairs, newPair)) {
+    if (callBackToCheckBetterResult(newPair, pairs)) {
       pairs = Object.assign({}, newPair);
       pairs.rank = 7;
     }
@@ -121,37 +123,4 @@ const searchOnList = (pairs, list) => {
   return pairs;
 };
 
-const combinationsSearch = (
-  pairs,
-  userCards,
-  replaceFromDeck,
-  replaceFromDeckLength
-) => {
-  let combinationsArray = combineGenerator(
-    userCards,
-    5 - replaceFromDeckLength
-  );
-  // builc array size 5 with cards from the replacmentDeck and the additional cards from user
-  for (let i = 0; i < combinationsArray.length; i++) {
-    let additionalCards = combinationsArray[i];
-
-    let searchList =
-      additionalCards === undefined
-        ? replaceFromDeck
-        : replaceFromDeck.concat(combinationsArray[i]);
-
-    if (searchList.length === 5) {
-      let newPair = searchForPairs(searchList);
-
-      if (newPair.highPair.positionM > -1 && newPair.lowPair.positionM > -1) {
-        if (checkIfBetter(pairs, newPair)) {
-          pairs = Object.assign({}, newPair);
-          pairs.rank = 7;
-        }
-      }
-    }
-  }
-
-  return pairs;
-};
 export { isTwoPair };

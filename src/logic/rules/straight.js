@@ -1,6 +1,6 @@
 import baseResult from "../../utils/baseResult";
 import { getValue } from "../../utils/valuesConvertTable";
-import { combineGenerator } from "../../utils/combinations";
+import { combineGenerator, combineSearch } from "../../utils/combinations";
 /**
  * input - userCards :5 cards
  *        replaceFromDeck: [1..5] cards
@@ -26,17 +26,19 @@ const isStraight = (userCards = [], replaceFromDeck = []) => {
   } else if (replaceFromDeck.length === 5) {
     straight = searchOnList(straight, replaceFromDeck);
   } else {
-    straight = combinationsSearch(
+    straight = combineSearch(
       straight,
       userCards,
       replaceFromDeck,
-      replaceFromDeckLength
+      replaceFromDeckLength,
+      callBackToCheckRules,
+      callBackToCheckBetterResult
     );
   }
   return Object.assign({}, baseResult, straight);
 };
 
-const searchForStraight = list => {
+const callBackToCheckRules = list => {
   let straight = {
     value: 0,
     position1: -1,
@@ -92,14 +94,14 @@ const searchForStraight = list => {
   return straight;
 };
 
-const checkIfBetter = (oldStraight, newStraight) => {
+const callBackToCheckBetterResult = (newStraight, oldStraight) => {
   return oldStraight.highest <= newStraight.highest;
 };
 
 const searchOnList = (straight, list) => {
-  let newStraight = searchForStraight(list);
+  let newStraight = callBackToCheckRules(list);
   if (newStraight.highest > 0) {
-    if (checkIfBetter(straight, newStraight)) {
+    if (callBackToCheckBetterResult(newStraight, straight)) {
       straight = Object.assign({}, newStraight);
       straight.rank = 5;
     }
@@ -107,36 +109,4 @@ const searchOnList = (straight, list) => {
   return straight;
 };
 
-const combinationsSearch = (
-  straight,
-  userCards,
-  replaceFromDeck,
-  replaceFromDeckLength
-) => {
-  let combinationsArray = combineGenerator(
-    userCards,
-    5 - replaceFromDeckLength
-  );
-  // builc array size 5 with cards from the replacmentDeck and the additional cards from user
-  for (let i = 0; i < combinationsArray.length; i++) {
-    let additionalCards = combinationsArray[i];
-
-    let searchList =
-      additionalCards === undefined
-        ? replaceFromDeck
-        : replaceFromDeck.concat(combinationsArray[i]);
-
-    if (searchList.length === 5) {
-      let newStraight = searchForStraight(searchList);
-      if (newStraight.highest > 0) {
-        if (checkIfBetter(straight, newStraight)) {
-          straight = Object.assign({}, newStraight);
-          straight.rank = 5;
-        }
-      }
-    }
-  }
-
-  return straight;
-};
 export { isStraight };

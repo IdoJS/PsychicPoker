@@ -18,7 +18,6 @@ describe("Check isHighCard", () => {
     hand = ["3D", "5S", "2H", "QD", "TD"];
     replace = ["6S"];
     result = isHighCard(hand, replace);
-    console.log("res ", result);
     expect(result.rank).toBe(9);
     expect(result.highest).toBe(12);
     expect(JSON.stringify(result.cards)).toBe('["6S","5S","2H","QD","TD"]');

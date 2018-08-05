@@ -1,6 +1,6 @@
 import baseResult from "../../utils/baseResult";
 import { getValue, getSuit } from "../../utils/valuesConvertTable";
-import { combineGenerator } from "../../utils/combinations";
+import { combineGenerator, combineSearch } from "../../utils/combinations";
 /**
  * input - userCards :5 cards
  *        replaceFromDeck: [1..5] cards
@@ -21,18 +21,20 @@ const isFlush = (userCards = [], replaceFromDeck = []) => {
   } else if (replaceFromDeck.length === 5) {
     flush = searchOnList(flush, replaceFromDeck);
   } else {
-    flush = combinationsSearch(
+    flush = combineSearch(
       flush,
       userCards,
       replaceFromDeck,
-      replaceFromDeckLength
+      replaceFromDeckLength,
+      callBackToCheckRules,
+      callBackToCheckBetterResult
     );
   }
 
   return Object.assign({}, baseResult, flush);
 };
 
-const searchForFlush = list => {
+const callBackToCheckRules = list => {
   let flush = {
     value: 0,
     cards: [],
@@ -65,14 +67,14 @@ const searchForFlush = list => {
   return flush;
 };
 
-const checkIfBetter = (oldStraight, newStraight) => {
+const callBackToCheckBetterResult = (newStraight, oldStraight) => {
   return oldStraight.value <= newStraight.value;
 };
 
 const searchOnList = (flush, list) => {
-  let newFlush = searchForFlush(list);
+  let newFlush = callBackToCheckRules(list);
   if (newFlush.value > 0) {
-    if (checkIfBetter(flush, newFlush)) {
+    if (callBackToCheckBetterResult(newFlush, flush)) {
       flush = Object.assign({}, newFlush);
       flush.rank = 4;
     }
@@ -81,36 +83,4 @@ const searchOnList = (flush, list) => {
   return flush;
 };
 
-const combinationsSearch = (
-  flush,
-  userCards,
-  replaceFromDeck,
-  replaceFromDeckLength
-) => {
-  let combinationsArray = combineGenerator(
-    userCards,
-    5 - replaceFromDeckLength
-  );
-  // builc array size 5 with cards from the replacmentDeck and the additional cards from user
-  for (let i = 0; i < combinationsArray.length; i++) {
-    let additionalCards = combinationsArray[i];
-
-    let searchList =
-      additionalCards === undefined
-        ? replaceFromDeck
-        : replaceFromDeck.concat(combinationsArray[i]);
-
-    if (searchList.length === 5) {
-      let newFlush = searchForFlush(searchList);
-      if (newFlush.value > 0) {
-        if (checkIfBetter(flush, newFlush)) {
-          flush = Object.assign({}, newFlush);
-          flush.rank = 4;
-        }
-      }
-    }
-  }
-
-  return flush;
-};
 export { isFlush };

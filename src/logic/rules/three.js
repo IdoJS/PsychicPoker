@@ -1,6 +1,6 @@
 import baseResult from "../../utils/baseResult";
 import { getValue } from "../../utils/valuesConvertTable";
-import { combineGenerator } from "../../utils/combinations";
+import { combineGenerator, combineSearch } from "../../utils/combinations";
 /**
  * input - userCards :5 cards
  *        replaceFromDeck: [1..5] cards
@@ -24,18 +24,20 @@ const isThree = (userCards = [], replaceFromDeck = []) => {
   } else if (replaceFromDeck.length === 5) {
     three = searchOnList(three, replaceFromDeck);
   } else {
-    three = combinationsSearch(
+    three = combineSearch(
       three,
       userCards,
       replaceFromDeck,
-      replaceFromDeckLength
+      replaceFromDeckLength,
+      callBackToCheckRules,
+      callBackToCheckBetterResult
     );
   }
 
   return Object.assign({}, baseResult, three);
 };
 
-const searchForThree = list => {
+const callBackToCheckRules = list => {
   let three = {
     value: 0,
     position1: -1,
@@ -69,15 +71,15 @@ const searchForThree = list => {
   return three;
 };
 
-const checkIfBetter = (oldThree, newThree) => {
+const callBackToCheckBetterResult = (newThree, oldThree) => {
   return oldThree.value <= newThree.value;
 };
 
 const searchOnList = (three, list) => {
-  let newThree = searchForThree(list);
+  let newThree = callBackToCheckRules(list);
 
   if (newThree.value > 0) {
-    if (checkIfBetter(three, newThree)) {
+    if (callBackToCheckBetterResult(newThree, three)) {
       three = Object.assign({}, newThree);
       three.rank = 6;
     }
@@ -85,37 +87,37 @@ const searchOnList = (three, list) => {
   return three;
 };
 
-const combinationsSearch = (
-  three,
-  userCards,
-  replaceFromDeck,
-  replaceFromDeckLength
-) => {
-  let combinationsArray = combineGenerator(
-    userCards,
-    5 - replaceFromDeckLength
-  );
-  // builc array size 5 with cards from the replacmentDeck and the additional cards from user
-  for (let i = 0; i < combinationsArray.length; i++) {
-    let additionalCards = combinationsArray[i];
+// const combinationsSearch = (
+//   three,
+//   userCards,
+//   replaceFromDeck,
+//   replaceFromDeckLength
+// ) => {
+//   let combinationsArray = combineGenerator(
+//     userCards,
+//     5 - replaceFromDeckLength
+//   );
+//   // builc array size 5 with cards from the replacmentDeck and the additional cards from user
+//   for (let i = 0; i < combinationsArray.length; i++) {
+//     let additionalCards = combinationsArray[i];
 
-    let searchList =
-      additionalCards === undefined
-        ? replaceFromDeck
-        : replaceFromDeck.concat(combinationsArray[i]);
+//     let searchList =
+//       additionalCards === undefined
+//         ? replaceFromDeck
+//         : replaceFromDeck.concat(combinationsArray[i]);
 
-    if (searchList.length === 5) {
-      let newThree = searchForThree(searchList);
+//     if (searchList.length === 5) {
+//       let newThree = callBackToCheckRules(searchList);
 
-      if (newThree.value > 0) {
-        if (checkIfBetter(three, newThree)) {
-          three = Object.assign({}, newThree);
-          three.rank = 6;
-        }
-      }
-    }
-  }
+//       if (newThree.value > 0) {
+//         if (checkIfBetter(three, newThree)) {
+//           three = Object.assign({}, newThree);
+//           three.rank = 6;
+//         }
+//       }
+//     }
+//   }
 
-  return three;
-};
+//   return three;
+// };
 export { isThree };

@@ -1,6 +1,6 @@
 import baseResult from "../../utils/baseResult";
 import { getValue } from "../../utils/valuesConvertTable";
-import { combineGenerator } from "../../utils/combinations";
+import { combineGenerator, combineSearch } from "../../utils/combinations";
 /**
  * input - userCards :5 cards
  *        replaceFromDeck: [1..5] cards
@@ -26,17 +26,19 @@ const isFullHouse = (userCards = [], replaceFromDeck = []) => {
   } else if (replaceFromDeck.length === 5) {
     fullHouse = searchOnList(fullHouse, replaceFromDeck);
   } else {
-    fullHouse = combinationsSearch(
+    fullHouse = combineSearch(
       fullHouse,
       userCards,
       replaceFromDeck,
-      replaceFromDeckLength
+      replaceFromDeckLength,
+      callBackToCheckRules,
+      callBackToCheckBetterResult
     );
   }
   return Object.assign({}, baseResult, fullHouse);
 };
 
-const searchForFullHouse = list => {
+const callBackToCheckRules = list => {
   let fullHouse = {
     value: 0,
     positionThree1: -1,
@@ -85,14 +87,16 @@ const searchForFullHouse = list => {
   return fullHouse;
 };
 
-const checkIfBetter = (oldFullHouse, newFullHouse) => {
-  return oldFullHouse.highest <= newFullHouse.highest;
+const callBackToCheckBetterResult = (newFullHouse, oldFullHouse) => {
+  return (
+    newFullHouse.highest > 0 && oldFullHouse.highest <= newFullHouse.highest
+  );
 };
 
 const searchOnList = (fullHouse, list) => {
-  let newFullHouse = searchForFullHouse(list);
+  let newFullHouse = callBackToCheckRules(list);
   if (newFullHouse.highest > 0) {
-    if (checkIfBetter(fullHouse, newFullHouse)) {
+    if (callBackToCheckBetterResult(newFullHouse, fullHouse)) {
       fullHouse = Object.assign({}, newFullHouse);
       fullHouse.rank = 3;
     }
@@ -100,36 +104,4 @@ const searchOnList = (fullHouse, list) => {
   return fullHouse;
 };
 
-const combinationsSearch = (
-  fullHouse,
-  userCards,
-  replaceFromDeck,
-  replaceFromDeckLength
-) => {
-  let combinationsArray = combineGenerator(
-    userCards,
-    5 - replaceFromDeckLength
-  );
-  // builc array size 5 with cards from the replacmentDeck and the additional cards from user
-  for (let i = 0; i < combinationsArray.length; i++) {
-    let additionalCards = combinationsArray[i];
-
-    let searchList =
-      additionalCards === undefined
-        ? replaceFromDeck
-        : replaceFromDeck.concat(combinationsArray[i]);
-
-    if (searchList.length === 5) {
-      let newFullHouse = searchForFullHouse(searchList);
-      if (newFullHouse.highest > 0) {
-        if (checkIfBetter(fullHouse, newFullHouse)) {
-          fullHouse = Object.assign({}, newFullHouse);
-          fullHouse.rank = 3;
-        }
-      }
-    }
-  }
-
-  return fullHouse;
-};
 export { isFullHouse };
