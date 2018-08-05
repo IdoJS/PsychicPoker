@@ -80,44 +80,11 @@ const searchOnList = (three, list) => {
 
   if (newThree.value > 0) {
     if (callBackToCheckBetterResult(newThree, three)) {
-      three = Object.assign({}, newThree);
+      three = newThree;
       three.rank = 6;
     }
   }
   return three;
 };
 
-// const combinationsSearch = (
-//   three,
-//   userCards,
-//   replaceFromDeck,
-//   replaceFromDeckLength
-// ) => {
-//   let combinationsArray = combineGenerator(
-//     userCards,
-//     5 - replaceFromDeckLength
-//   );
-//   // builc array size 5 with cards from the replacmentDeck and the additional cards from user
-//   for (let i = 0; i < combinationsArray.length; i++) {
-//     let additionalCards = combinationsArray[i];
-
-//     let searchList =
-//       additionalCards === undefined
-//         ? replaceFromDeck
-//         : replaceFromDeck.concat(combinationsArray[i]);
-
-//     if (searchList.length === 5) {
-//       let newThree = callBackToCheckRules(searchList);
-
-//       if (newThree.value > 0) {
-//         if (checkIfBetter(three, newThree)) {
-//           three = Object.assign({}, newThree);
-//           three.rank = 6;
-//         }
-//       }
-//     }
-//   }
-
-//   return three;
-// };
 export { isThree };

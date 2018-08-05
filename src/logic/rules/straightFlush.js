@@ -115,7 +115,7 @@ const searchOnList = (straightFlush, list) => {
   let newStraightFlush = callBackToCheckRules(list);
   if (newStraightFlush.highest > 0) {
     if (callBackToCheckBetterResult(newStraightFlush, straightFlush)) {
-      straightFlush = Object.assign({}, newStraightFlush);
+      straightFlush = newStraightFlush;
       straightFlush.rank = 1;
     }
   }

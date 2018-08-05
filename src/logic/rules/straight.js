@@ -102,7 +102,7 @@ const searchOnList = (straight, list) => {
   let newStraight = callBackToCheckRules(list);
   if (newStraight.highest > 0) {
     if (callBackToCheckBetterResult(newStraight, straight)) {
-      straight = Object.assign({}, newStraight);
+      straight = newStraight;
       straight.rank = 5;
     }
   }

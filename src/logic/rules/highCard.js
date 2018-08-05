@@ -65,7 +65,7 @@ const callBackToCheckBetterResult = (newHighCard, oldHighCard) => {
 const searchOnList = (highCard, list) => {
   let newHighCard = callBackToCheckRules(list);
   if (callBackToCheckBetterResult(newHighCard, highCard)) {
-    highCard = Object.assign({}, newHighCard);
+    highCard = newHighCard;
     highCard.rank = 9;
   }
   return highCard;

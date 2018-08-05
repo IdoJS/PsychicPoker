@@ -77,7 +77,7 @@ const callBackToCheckBetterResult = (newOnePair, oldOnePair) => {
 const searchOnList = (onePair, list) => {
   let newOnePair = callBackToCheckRules(list);
   if (callBackToCheckBetterResult(newOnePair, onePair)) {
-    onePair = Object.assign({}, newOnePair);
+    onePair = newOnePair;
     onePair.rank = 8;
   }
   return onePair;

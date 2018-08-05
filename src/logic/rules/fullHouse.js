@@ -97,7 +97,7 @@ const searchOnList = (fullHouse, list) => {
   let newFullHouse = callBackToCheckRules(list);
   if (newFullHouse.highest > 0) {
     if (callBackToCheckBetterResult(newFullHouse, fullHouse)) {
-      fullHouse = Object.assign({}, newFullHouse);
+      fullHouse = newFullHouse;
       fullHouse.rank = 3;
     }
   }

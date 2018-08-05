@@ -75,7 +75,7 @@ const searchOnList = (flush, list) => {
   let newFlush = callBackToCheckRules(list);
   if (newFlush.value > 0) {
     if (callBackToCheckBetterResult(newFlush, flush)) {
-      flush = Object.assign({}, newFlush);
+      flush = newFlush;
       flush.rank = 4;
     }
   }

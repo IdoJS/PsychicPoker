@@ -43,7 +43,7 @@ const combineSearch = (
     if (searchList.length === 5) {
       let newResultObject = callBackToCheckRules(searchList);
       if (callBackToCheckBetterResult(newResultObject, resultObject)) {
-        resultObject = Object.assign({}, newResultObject);
+        resultObject = newResultObject;
       }
     }
   }

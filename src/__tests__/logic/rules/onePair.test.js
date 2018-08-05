@@ -1,7 +1,7 @@
 import { isOnePair } from "../../../logic/rules/onePair";
 import { manageCards } from "../../../logic/manageCards";
 
-describe("Check isOnePair", () => {
+describe("Check isOnePair ", () => {
   let hand = [];
   let replace = [];
   let result;

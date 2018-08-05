@@ -83,7 +83,7 @@ const searchOnList = (four, list) => {
 
   if (newFour.value > 0) {
     if (callBackToCheckBetterResult(newFour, four)) {
-      four = Object.assign({}, newFour);
+      four = newFour;
       four.rank = 2;
     }
   }

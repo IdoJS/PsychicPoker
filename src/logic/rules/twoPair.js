@@ -116,7 +116,7 @@ const searchOnList = (pairs, list) => {
   let newPair = callBackToCheckRules(list);
   if (newPair.highPair.positionM > -1 && newPair.lowPair.positionM > -1) {
     if (callBackToCheckBetterResult(newPair, pairs)) {
-      pairs = Object.assign({}, newPair);
+      pairs = newPair;
       pairs.rank = 7;
     }
   }

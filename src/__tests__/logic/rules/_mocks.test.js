@@ -1,6 +1,6 @@
 import { findBestHand } from "../../../logic/bestHand";
 
-describe("mock tests", () => {
+describe("mock tests ", () => {
   let hand;
   let deck;
   let result;
