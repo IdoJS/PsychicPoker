@@ -1,5 +1,6 @@
 import baseResult from "../../utils/baseResult";
 import { getValue } from "../../utils/valuesConvertTable";
+import { combineGenerator } from "../../utils/combinations";
 /**
  * input - userCards :5 cards
  *        replaceFromDeck: [1..5] cards
@@ -7,36 +8,99 @@ import { getValue } from "../../utils/valuesConvertTable";
  */
 
 const isHighCard = (userCards = [], replaceFromDeck = []) => {
-  let result = Object.assign({}, baseResult);
+  let replaceFromDeckLength = replaceFromDeck.length;
+  let highCard = {
+    cards: [],
+    rank: 15,
+    value: -1,
+    positionM: -1,
+    highest: -1
+  };
 
-  let highestCard = 0;
+  if (replaceFromDeck.length === 0) {
+    highCard = searchOnList(highCard, userCards);
+  } else if (replaceFromDeck.length === 5) {
+    highCard = searchOnList(highCard, replaceFromDeck);
+  } else {
+    highCard = combinationsSearch(
+      highCard,
+      userCards,
+      replaceFromDeck,
+      replaceFromDeckLength
+    );
+  }
+  return Object.assign({}, baseResult, highCard);
+};
 
-  // find high card at the user deck
-  for (let i = 0; i < userCards.length; i++) {
-    let cardValue = getValue(userCards[i]);
-    if (cardValue > highestCard) {
-      highestCard = cardValue;
-      result.rank = 9;
-      result.cards = userCards;
-      result.highest = highestCard;
-      result.cardHighValue = userCards[i];
+const searchForHighCard = list => {
+  let highCard = {
+    cards: [],
+    rank: 15,
+    value: -1,
+    position: -1,
+    highest: -1
+  };
+
+  for (let i = 0; i < list.length; i++) {
+    let value = getValue(list[i]);
+    if (highCard.value < value) {
+      highCard.cards = list;
+      highCard.value = value;
+      highCard.highest = value;
+      highCard.position = i;
+      highCard.rank = 9;
     }
   }
-  let cardList = userCards.concat(replaceFromDeck);
-  // find high card at the replaceFromDeck
-  for (let i = 0; i < replaceFromDeck.length; i++) {
-    let cardValue = getValue(replaceFromDeck[i]);
-    if (cardValue > highestCard) {
-      highestCard = cardValue;
-      result.rank = 9;
-      result.cards = cardList;
-      result.highest = highestCard;
-      result.cardHighValue = replaceFromDeck[i];
+
+  return highCard;
+};
+
+const checkIfBetter = (oldHighCard, newHighCard) => {
+  return oldHighCard.value <= newHighCard.value;
+};
+
+const searchOnList = (highCard, list) => {
+  let newHighCard = searchForHighCard(list);
+  if (newHighCard.value > 0) {
+    if (checkIfBetter(highCard, newHighCard)) {
+      highCard = Object.assign({}, newHighCard);
+      highCard.rank = 9;
     }
-    cardList.shift();
+  }
+  return highCard;
+};
+
+const combinationsSearch = (
+  highCard,
+  userCards,
+  replaceFromDeck,
+  replaceFromDeckLength
+) => {
+  let combinationsArray = combineGenerator(
+    userCards,
+    5 - replaceFromDeckLength
+  );
+  // builc array size 5 with cards from the replacmentDeck and the additional cards from user
+  for (let i = 0; i < combinationsArray.length; i++) {
+    let additionalCards = combinationsArray[i];
+
+    let searchList =
+      additionalCards === undefined
+        ? replaceFromDeck
+        : replaceFromDeck.concat(combinationsArray[i]);
+
+    if (searchList.length === 5) {
+      let newHighCard = searchForHighCard(searchList);
+      if (newHighCard.value > 0) {
+        if (checkIfBetter(highCard, newHighCard)) {
+          highCard = Object.assign({}, newHighCard);
+          highCard.rank = 9;
+        }
+      }
+    }
   }
 
-  return result;
+  return highCard;
 };
 
 export { isHighCard };

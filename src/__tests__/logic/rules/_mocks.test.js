@@ -73,6 +73,6 @@ describe("mock tests", () => {
     deck = ["6S", "KH", "9H", "AD", "QH"];
     result = findBestHand(hand, deck);
     expect(result.rank).toBe(9);
-    expect(JSON.stringify(result.cards)).toBe('["TD","6S","KH","9H","AD"]');
+    expect(JSON.stringify(result.cards)).toBe('["6S","KH","9H","AD","TD"]');
   });
 });
