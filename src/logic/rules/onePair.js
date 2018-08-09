@@ -1,6 +1,7 @@
 import baseResult from "../../utils/baseResult";
 import { getValue } from "../../utils/valuesConvertTable";
 import { combineGenerator, combineSearch } from "../../utils/combinations";
+
 /**
  * input - userCards :5 cards
  *        replaceFromDeck: [1..5] cards
@@ -83,4 +84,44 @@ const searchOnList = (onePair, list) => {
   return onePair;
 };
 
-export { isOnePair };
+const findRepeatsOfValues = (
+  accumulator,
+  currentValue,
+  currentIndex,
+  cards
+) => {
+  let value = getValue(currentValue);
+
+  accumulator[value] = !accumulator[value] ? 1 : accumulator[value] + 1;
+
+  return accumulator;
+};
+
+const isOnePairNew = (accumulator, currentCards, currentIndex, cards) => {
+  const repeatByValue = currentCards.reduce(findRepeatsOfValues, {});
+  const findPairs = {
+    2: []
+  };
+
+  Object.keys(repeatByValue).forEach((value, key) => {
+    if (repeatByValue[value] === 2) {
+      findPairs[2].push(value);
+    }
+  });
+
+  if (findPairs[2].length === 1) {
+    if (accumulator.rank === 15) {
+      accumulator = {
+        rank: 8,
+        highCard: findPairs[2][0],
+        cards: currentCards
+      };
+    } else if (getValue(accumulator.highCard) < findPairs[2][0]) {
+      accumulator.highCard = findPairs[2][0];
+      accumulator.cards = currentCards;
+    }
+  }
+  return accumulator;
+};
+
+export { isOnePair, isOnePairNew };

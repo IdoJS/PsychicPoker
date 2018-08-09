@@ -1,7 +1,7 @@
-import { findBestHand } from "./bestHand";
+import { findBestHand, entryPoint } from "./bestHand";
 
 const manageCards = (hand = [], deck = []) => {
-  let result = findBestHand(hand, deck);
+  let result = entryPoint(hand, deck);
 
   let removeFromUser = [];
 

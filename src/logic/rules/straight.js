@@ -1,6 +1,7 @@
 import baseResult from "../../utils/baseResult";
 import { getValue } from "../../utils/valuesConvertTable";
 import { combineGenerator, combineSearch } from "../../utils/combinations";
+
 /**
  * input - userCards :5 cards
  *        replaceFromDeck: [1..5] cards
@@ -109,4 +110,53 @@ const searchOnList = (straight, list) => {
   return straight;
 };
 
-export { isStraight };
+const findStraight = (accumulator, currentValue, currentIndex, cards) => {
+  if (!accumulator.isStraight) {
+    return accumulator;
+  }
+
+  let value = getValue(currentValue);
+
+  if (!accumulator.lastValue) {
+    // initialize
+    accumulator.lastValue = value;
+  } else {
+    accumulator.isStraight = (accumulator.lastValue - 1).toString() === value;
+  }
+
+  accumulator.lastValue = getValue(currentValue);
+  return accumulator;
+};
+
+const findStraigh = (accumulator, currentValue, currentIndex, cards) => {
+  let value = getValue(currentValue);
+  if (accumulator.lastValue) {
+    accumulator.isStraight = accumulator.lastValue - 1 === value;
+  }
+
+  accumulator.lastValue = value;
+  return accumulator;
+};
+
+const isStraightNew = (accumulator, currentCards, currentIndex, cards) => {
+  const isStraightResult = currentCards.reduce(findStraight, {
+    isStraight: true
+  });
+
+  if (isStraightResult.isStraight) {
+    if (accumulator.rank === 15) {
+      return {
+        rank: 5,
+        highCard: currentCards[0],
+        cards: currentCards
+      };
+    } else if (getValue(accumulator.highCard) < getValue(currentCards[0])) {
+      accumulator.highCard = currentCards[0];
+      accumulator.cards = currentCards;
+    }
+  }
+
+  return accumulator;
+};
+
+export { isStraight, isStraightNew };
