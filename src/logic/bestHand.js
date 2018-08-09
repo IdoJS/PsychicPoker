@@ -1,17 +1,15 @@
-import { isHighCard, isHighCardNew } from "./rules/highCard";
-import { isOnePair, isOnePairNew } from "./rules/onePair";
-import { isTwoPair, isTwoPairNew } from "./rules/twoPair";
-import { isThree, isThreeNew } from "./rules/three";
-import { isStraight, isStraightNew } from "./rules/straight";
-import { isFlush, isFlushNew } from "./rules/flush";
-import { isFullHouse, isFullHouseNew } from "./rules/fullHouse";
-import { isFour, isFourNew } from "./rules/four";
-import { isStraightFlush, isStraightFlushNew } from "./rules/straightFlush";
-
 import { asyncGetAllPossibleSubArrayFromHand } from "../utils/combinations";
 import { getValue } from "../utils/valuesConvertTable";
 
-import constants from "../utils/constants";
+import { isHighCard } from "./rules/highCard";
+import { isOnePair } from "./rules/onePair";
+import { isTwoPair } from "./rules/twoPair";
+import { isThree } from "./rules/three";
+import { isStraight } from "./rules/straight";
+import { isFlush } from "./rules/flush";
+import { isFullHouse } from "./rules/fullHouse";
+import { isFour } from "./rules/four";
+import { isStraightFlush } from "./rules/straightFlush";
 
 const sortByValue = (a, b) => {
   return getValue(b) - getValue(a);
@@ -74,7 +72,6 @@ const checkIfRulePossible = data => {
   if (currentIndex === 0 || currentIndex === 4) {
     allPossibleHands = allPossibleHands.concat(additionalCombosForStraight);
   }
-
   return allPossibleHands.reduce(currentRule, { rank: 15 });
 };
 
@@ -91,15 +88,15 @@ async function entryPoint(hand = [], deck = []) {
 
   // 3. rule list
   const ruleList = [
-    isStraightFlushNew,
-    isFourNew,
-    isFullHouseNew,
-    isFlushNew,
-    isStraightNew,
-    isThreeNew,
-    isTwoPairNew,
-    isOnePairNew,
-    isHighCardNew
+    isStraightFlush,
+    isFour,
+    isFullHouse,
+    isFlush,
+    isStraight,
+    isThree,
+    isTwoPair,
+    isOnePair,
+    isHighCard
   ];
 
   // 4. find best hand by rule
@@ -124,83 +121,4 @@ async function entryPoint(hand = [], deck = []) {
   return result;
 }
 
-const findBestHand = (hand = [], deck = []) => {
-  let bestResult = {
-    rank: 15,
-    highest: 0,
-    takeFromDeck: []
-  };
-  let result;
-  bestResult = checkAllPossibleHandType(hand, []);
-
-  for (let i = 1; i <= deck.length; i++) {
-    let replaceFromDeck = deck.slice(0, i);
-    result = checkAllPossibleHandType(hand, replaceFromDeck);
-    if (result.rank < bestResult.rank) {
-      bestResult = Object.assign({}, result);
-      bestResult.takeFromDeck = replaceFromDeck;
-    } else if (result.rank === bestResult.rank) {
-      switch (result.rank) {
-        case constants.NAME_TO_RANK.STRAIGHT_FLUSH:
-        case constants.NAME_TO_RANK.FOUR:
-        case constants.NAME_TO_RANK.THREE:
-        case constants.NAME_TO_RANK.HIGH_CARD:
-        case constants.NAME_TO_RANK.FLUSH:
-        case constants.NAME_TO_RANK.STRAIGHT:
-        case constants.NAME_TO_RANK.FULL_HOUSE:
-          if (result.highest > bestResult.highest) {
-            bestResult = Object.assign({}, result);
-            bestResult.takeFromDeck = replaceFromDeck;
-          }
-          break;
-
-        case constants.NAME_TO_RANK.TWO_PAIR:
-          if (result.highPair.value > bestResult.highPair.value) {
-            bestResult = Object.assign({}, result);
-            bestResult.takeFromDeck = replaceFromDeck;
-          }
-          if (
-            result.highPair.value === bestResult.highPair.value &&
-            result.lowPair.value > bestResult.lowPair.value
-          ) {
-            bestResult = Object.assign({}, result);
-            bestResult.takeFromDeck = replaceFromDeck;
-          }
-          break;
-        case constants.NAME_TO_RANK.ONE_PAIR:
-          if (result.highPair.value > bestResult.highPair.value) {
-            bestResult = Object.assign({}, result);
-            bestResult.takeFromDeck = replaceFromDeck;
-          }
-          break;
-        default:
-          break;
-      }
-    }
-  }
-
-  return bestResult;
-};
-
-const checkAllPossibleHandType = (handCards, replaceFromDeck) => {
-  let result = isStraightFlush(handCards, replaceFromDeck);
-  if (result.rank === 1) return result;
-  result = isFour(handCards, replaceFromDeck);
-  if (result.rank === 2) return result;
-  result = isFullHouse(handCards, replaceFromDeck);
-  if (result.rank === 3) return result;
-  result = isFlush(handCards, replaceFromDeck);
-  if (result.rank === 4) return result;
-  result = isStraight(handCards, replaceFromDeck);
-  if (result.rank === 5) return result;
-  result = isThree(handCards, replaceFromDeck);
-  if (result.rank === 6) return result;
-  result = isTwoPair(handCards, replaceFromDeck);
-  if (result.rank === 7) return result;
-  result = isOnePair(handCards, replaceFromDeck);
-  if (result.rank === 8) return result;
-  result = isHighCard(handCards, replaceFromDeck);
-  if (result.rank === 9) return result;
-};
-
-export { findBestHand, entryPoint };
+export { entryPoint };

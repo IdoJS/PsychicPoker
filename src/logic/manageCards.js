@@ -1,4 +1,4 @@
-import { findBestHand, entryPoint } from "./bestHand";
+import { entryPoint } from "./bestHand";
 
 const manageCards = (hand = [], deck = []) => {
   let result = entryPoint(hand, deck);

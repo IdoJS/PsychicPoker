@@ -19,38 +19,6 @@ const combineGenerator = (a, min) => {
   return all;
 };
 
-const combineSearch = (
-  resultObject,
-  userCards,
-  replaceFromDeck,
-  replaceFromDeckLength,
-  callBackToCheckRules,
-  callBackToCheckBetterResult
-) => {
-  let combinationsArray = combineGenerator(
-    userCards,
-    5 - replaceFromDeckLength
-  );
-  // builc array size 5 with cards from the replacmentDeck and the additional cards from user
-  for (let i = 0; i < combinationsArray.length; i++) {
-    let additionalCards = combinationsArray[i];
-
-    let searchList =
-      additionalCards === undefined
-        ? replaceFromDeck
-        : replaceFromDeck.concat();
-
-    if (searchList.length === 5) {
-      let newResultObject = callBackToCheckRules(searchList);
-      if (callBackToCheckBetterResult(newResultObject, resultObject)) {
-        resultObject = newResultObject;
-      }
-    }
-  }
-
-  return resultObject;
-};
-
 const allSubArrayBySize = (accumulator, currentValue, currentIndex, cards) => {
   !accumulator[currentValue.length]
     ? (accumulator[currentValue.length] = [currentValue])
@@ -74,4 +42,4 @@ const asyncGetAllPossibleSubArrayFromHand = array => {
   });
 };
 
-export { combineGenerator, combineSearch, asyncGetAllPossibleSubArrayFromHand };
+export { combineGenerator, asyncGetAllPossibleSubArrayFromHand };
