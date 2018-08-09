@@ -45,4 +45,4 @@ const isFullHouse = (accumulator, currentCards, currentIndex, cards) => {
   return accumulator;
 };
 
-export { isFullHouse };
+export { isFullHouse, findRepeatsOfValues };

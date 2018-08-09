@@ -29,15 +29,15 @@ const isOnePair = (accumulator, currentCards, currentIndex, cards) => {
     if (accumulator.rank === 15) {
       accumulator = {
         rank: 8,
-        highCard: findPairs[2][0],
+        highCardValue: findPairs[2][0],
         cards: currentCards
       };
-    } else if (getValue(accumulator.highCard) < findPairs[2][0]) {
-      accumulator.highCard = findPairs[2][0];
+    } else if (getValue(accumulator.highCardValue) < findPairs[2][0]) {
+      accumulator.highCardValue = findPairs[2][0];
       accumulator.cards = currentCards;
     }
   }
   return accumulator;
 };
 
-export { isOnePair };
+export { isOnePair, findRepeatsOfValues };

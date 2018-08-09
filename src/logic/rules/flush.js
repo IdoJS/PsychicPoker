@@ -44,4 +44,4 @@ const isFlush = (accumulator, currentCards, currentIndex, cards) => {
   return accumulator;
 };
 
-export { isFlush };
+export { isFlush, findFlush };

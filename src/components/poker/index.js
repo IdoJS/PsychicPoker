@@ -78,15 +78,16 @@ class Poker extends React.Component {
     const cards = pickRandom(10);
     const hand = cards.slice(0, 5);
     const deck = cards.slice(5, 10);
-    const result = manageCards(hand, deck);
-    let { takeFromDeck, removeFromUser } = result;
-    this.setState({
-      handBlink: removeFromUser,
-      deckBlink: takeFromDeck,
-      bestHand: result.rank,
-      hand,
-      deck,
-      cardsBestHand: result.bestHand
+    manageCards(hand, deck).then(result => {
+      let { takeFromDeck, removeFromUser } = result;
+      this.setState({
+        handBlink: removeFromUser,
+        deckBlink: takeFromDeck,
+        bestHand: result.rank,
+        hand,
+        deck,
+        cardsBestHand: result.bestHand
+      });
     });
   }
 }

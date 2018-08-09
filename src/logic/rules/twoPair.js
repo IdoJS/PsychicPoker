@@ -41,4 +41,4 @@ const isTwoPair = (accumulator, currentCards, currentIndex, cards) => {
   return accumulator;
 };
 
-export { isTwoPair };
+export { isTwoPair, findRepeatsOfValues };

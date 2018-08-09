@@ -109,14 +109,15 @@ async function entryPoint(hand = [], deck = []) {
           additionalCombosForStraight,
           currentIndex
         });
+      } else {
+        // if fullfill rule, stop loop
+        array.splice(1); // way to break reduce, not wise to use because mutating the array
       }
 
       return currentBestHand;
     },
     { rank: 15 }
   );
-
-  console.log("entryPoint result", result);
 
   return result;
 }

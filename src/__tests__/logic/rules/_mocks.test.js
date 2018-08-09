@@ -134,16 +134,6 @@ describe("mock tests ", () => {
     });
   });
 
-  it("Hand: AC 2D 9C 3S KD Deck: 5S 4D KS AS 4C Best hand: straight", done => {
-    hand = ["AC", "2D", "9C", "3S", "KD"];
-    deck = ["5S", "4D", "KS", "AS", "4C"];
-    entryPoint(hand, deck).then(result => {
-      expect(result.rank).toBe(5);
-      expect(JSON.stringify(result.cards)).toBe('["5S","4D","3S","2D","1C"]');
-      done();
-    });
-  });
-
   it("Hand: AC 2D 6C 3S KD Deck: 5S 4D KS AS 4C Best hand: straight", done => {
     hand = ["AC", "2D", "6C", "3S", "KD"];
     deck = ["5S", "4D", "KS", "AS", "4C"];

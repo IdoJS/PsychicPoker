@@ -42,4 +42,4 @@ const isStraightFlush = (accumulator, currentCards, currentIndex, cards) => {
   return accumulator;
 };
 
-export { isStraightFlush };
+export { isStraightFlush, findStraightFlush };

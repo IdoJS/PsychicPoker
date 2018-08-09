@@ -1,54 +1,26 @@
-// import { isThree } from "../../../logic/rules/three";
+import { isThree, findThree } from "../../../logic/rules/three";
 
-// describe("Check isThree", () => {
-//   let hand = [];
-//   let replace = [];
-//   let result;
+describe("Four testing", () => {
+  const cardLists = [
+    ["6H", "6C", "6S", "4D", "2D"],
+    ["AD", "6D", "4D", "3D", "2D"]
+  ];
 
-//   it("Hand: 6C 6D 8C 2D 6H Deck: ", () => {
-//     hand = ["6C", "6D", "8C", "2D", "6H"];
-//     replace = [];
-//     result = isThree(hand, replace);
-//     expect(result.rank).toBe(6);
-//     expect(JSON.stringify(result.cards)).toBe('["6C","6D","8C","2D","6H"]');
-//   });
+  it("findFlush - success", () => {
+    let result = cardLists[0].reduce(findThree, { rank: 15 });
+    expect(result.rank).toBe(6);
+    expect(result.cards).toEqual(["6H", "6C", "6S", "4D", "2D"]);
+  });
 
-//   it("Hand: 6C 6D 8C 2D 6H Deck: ", () => {
-//     hand = ["6C", "6D", "8C", "2D", "6H"];
-//     replace = ["8C"];
-//     result = isThree(hand, replace);
-//     expect(result.rank).toBe(6);
-//     expect(JSON.stringify(result.cards)).toBe('["8C","6C","6D","2D","6H"]');
-//   });
+  it("findFlush - fail", () => {
+    let result = cardLists[1].reduce(findThree, { rank: 15 });
+    expect(result.rank).toBe(15);
+  });
 
-//   it("Hand: 6C 6D 8C 2D 6H Deck: ", () => {
-//     hand = ["6C", "6D", "8C", "2D", "6H"];
-//     replace = ["8C", "8H"];
-//     result = isThree(hand, replace);
-//     expect(result.rank).toBe(6);
-//     expect(JSON.stringify(result.cards)).toBe('["8C","8H","8C","2D","6H"]');
-//   });
+  it("isFlush - success", () => {
+    let result = cardLists.reduce(isThree, { rank: 15 });
 
-//   it("Hand: 6C 6D 8C 2D 6H Deck: ", () => {
-//     hand = ["6C", "6D", "8C", "2D", "6H"];
-//     replace = ["8C", "8H", "AC"];
-//     result = isThree(hand, replace);
-//     expect(result.rank).toBe(6);
-//     expect(JSON.stringify(result.cards)).toBe('["8C","8H","AC","8C","6H"]');
-//   });
-
-//   it("Hand: 6C 6D 8C 2D 6H Deck: ", () => {
-//     hand = ["6C", "6D", "8C", "2D", "6H"];
-//     replace = ["8C", "8H", "AC", "5C"];
-//     result = isThree(hand, replace);
-//     expect(result.rank).toBe(6);
-//     expect(JSON.stringify(result.cards)).toBe('["8C","8H","AC","5C","8C"]');
-//   });
-
-//   it("Hand: 6C 6D 8C 2D 6H Deck: ", () => {
-//     hand = ["6C", "6D", "8C", "2D", "6H"];
-//     replace = ["8C", "8H", "AC", "5C", "AD"];
-//     result = isThree(hand, replace);
-//     expect(result.rank).toBe(15);
-//   });
-// });
+    expect(result.rank).toBe(6);
+    expect(result.cards).toEqual(["6H", "6C", "6S", "4D", "2D"]);
+  });
+});

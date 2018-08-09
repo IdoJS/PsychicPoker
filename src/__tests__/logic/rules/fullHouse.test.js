@@ -1,54 +1,32 @@
-// import { isFullHouse } from "../../../logic/rules/fullHouse";
+import {
+  isFullHouse,
+  findRepeatsOfValues
+} from "../../../logic/rules/fullHouse";
 
-// describe("Check isFullHouse", () => {
-//   let hand = [];
-//   let replace = [];
-//   let result;
+describe("FullHouse testing", () => {
+  const cardLists = [
+    ["6H", "6C", "6S", "2D", "2D"],
+    ["AD", "6D", "4D", "3D", "2D"]
+  ];
 
-//   it("Hand: 6C 6D 8C 2D 6H Deck: ", () => {
-//     hand = ["2C", "5D", "2H", "2D", "5S"];
-//     replace = [];
-//     result = isFullHouse(hand, replace);
-//     expect(result.rank).toBe(3);
-//     expect(JSON.stringify(result.cards)).toBe('["2C","5D","2H","2D","5S"]');
-//   });
+  it("findRepeatsOfValues ", () => {
+    let result = cardLists[0].reduce(findRepeatsOfValues, {});
+    expect(result[2]).toBe(2);
+    expect(result[6]).toBe(3);
+  });
 
-//   it("Hand: 6C 6D 8C 2D 6H Deck: ", () => {
-//     hand = ["2C", "5D", "2H", "2D", "5S"];
-//     replace = ["5H"];
-//     result = isFullHouse(hand, replace);
-//     expect(result.rank).toBe(3);
-//     expect(JSON.stringify(result.cards)).toBe('["5H","5D","2H","2D","5S"]');
-//   });
+  it("findRepeatsOfValues", () => {
+    let result = cardLists[1].reduce(findRepeatsOfValues, {});
+    expect(result[2]).toBe(1);
+    expect(result[3]).toBe(1);
+    expect(result[4]).toBe(1);
+    expect(result[6]).toBe(1);
+    expect(result[14]).toBe(1);
+  });
 
-//   it("Hand: 6C 6D 8C 2D 6H Deck: ", () => {
-//     hand = ["2C", "5D", "2H", "2D", "5S"];
-//     replace = ["5H", "6C"];
-//     result = isFullHouse(hand, replace);
-//     expect(result.rank).toBe(15);
-//   });
-
-//   it("Hand: 6C 6D 8C 2D 6H Deck: ", () => {
-//     hand = ["2C", "5D", "2H", "2D", "5S"];
-//     replace = ["5H", "6C", "6H"];
-//     result = isFullHouse(hand, replace);
-//     expect(result.rank).toBe(3);
-//     expect(JSON.stringify(result.cards)).toBe('["5H","6C","6H","5D","5S"]');
-//   });
-
-//   it("Hand: 6C 6D 8C 2D 6H Deck: ", () => {
-//     hand = ["2C", "5D", "2H", "2D", "5S"];
-//     replace = ["5H", "6C", "6H", "6S"];
-//     result = isFullHouse(hand, replace);
-//     expect(result.rank).toBe(3);
-//     expect(JSON.stringify(result.cards)).toBe('["5H","6C","6H","6S","5S"]');
-//   });
-
-//   it("Hand: 6C 6D 8C 2D 6H Deck: ", () => {
-//     hand = ["2C", "5D", "2H", "2D", "5S"];
-//     replace = ["5H", "6C", "6H", "6S", "5D"];
-//     result = isFullHouse(hand, replace);
-//     expect(result.rank).toBe(3);
-//     expect(JSON.stringify(result.cards)).toBe('["5H","6C","6H","6S","5D"]');
-//   });
-// });
+  it("isFullHouse - success", () => {
+    let result = cardLists.reduce(isFullHouse, { rank: 15 });
+    expect(result.rank).toBe(3);
+    expect(result.cards).toEqual(["6H", "6C", "6S", "2D", "2D"]);
+  });
+});

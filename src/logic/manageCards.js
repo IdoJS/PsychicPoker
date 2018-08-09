@@ -1,22 +1,36 @@
 import { entryPoint } from "./bestHand";
+import { toFullCard } from "../utils/valuesConvertTable";
 
 const manageCards = (hand = [], deck = []) => {
-  let result = entryPoint(hand, deck);
+  return new Promise(resolve => {
+    entryPoint(hand, deck).then(result => {
+      let removeFromUser = [];
+      let takeFromDeck = [];
+      let keepInHand = [];
 
-  let removeFromUser = [];
+      result.cards.forEach((value, key) => {
+        let card = toFullCard(value);
+        if (deck.indexOf(value) !== -1) {
+          takeFromDeck.push(card);
+        } else {
+          keepInHand.push(card);
+        }
+      });
 
-  for (let i = 0; i < hand.length; i++) {
-    if (result.cards.indexOf(hand[i]) === -1) {
-      removeFromUser.push(hand[i]);
-    }
-  }
+      hand.forEach((value, key) => {
+        if (keepInHand.indexOf(value) === -1) {
+          removeFromUser.push(value);
+        }
+      });
 
-  return {
-    removeFromUser,
-    takeFromDeck: result.takeFromDeck || [],
-    rank: result.rank,
-    bestHand: result.cards
-  };
+      resolve({
+        removeFromUser,
+        takeFromDeck,
+        rank: result.rank,
+        bestHand: result.cards
+      });
+    });
+  });
 };
 
 export { manageCards };

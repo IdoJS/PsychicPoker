@@ -36,4 +36,4 @@ const isStraight = (accumulator, currentCards, currentIndex, cards) => {
   return accumulator;
 };
 
-export { isStraight };
+export { isStraight, findStraight };

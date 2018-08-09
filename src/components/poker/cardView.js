@@ -30,7 +30,7 @@ const CardView = props => {
   );
 };
 
-CardView.PropTypes = {
+CardView.propTypes = {
   cards: PropTypes.array,
   removeCard: PropTypes.func,
   type: PropTypes.string,

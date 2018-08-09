@@ -1,53 +1,25 @@
-// import { isFlush } from "../../../logic/rules/flush";
+import { findFlush, isFlush } from "../../../logic/rules/flush";
 
-// describe("Check isFlush", () => {
-//   let hand = [];
-//   let replace = [];
-//   let result;
+describe("Flush testing", () => {
+  const cardLists = [
+    ["AD", "6C", "4D", "3D", "2D"],
+    ["AD", "6D", "4D", "3D", "2D"]
+  ];
 
-//   it("Hand: 6C 6D 8C 2D 6H Deck: ", () => {
-//     hand = ["2C", "3C", "4C", "5C", "6C"];
-//     replace = [];
-//     result = isFlush(hand, replace);
-//     expect(result.rank).toBe(4);
-//     expect(JSON.stringify(result.cards)).toBe('["2C","3C","4C","5C","6C"]');
-//   });
+  it("findFlush - fail", () => {
+    let result = cardLists[0].reduce(findFlush, { isFlush: true });
+    expect(result.isFlush).toBe(false);
+  });
 
-//   it("Hand: 6C 6D 8C 2D 6H Deck: ", () => {
-//     hand = ["2C", "3C", "4C", "5C", "6C"];
-//     replace = ["9C"];
-//     result = isFlush(hand, replace);
-//     expect(result.rank).toBe(4);
-//     expect(JSON.stringify(result.cards)).toBe('["9C","3C","4C","5C","6C"]');
-//   });
+  it("findFlush - success", () => {
+    let result = cardLists[1].reduce(findFlush, { isFlush: true });
+    expect(result.isFlush).toBe(true);
+  });
 
-//   it("Hand: 6C 6D 8C 2D 6H Deck: ", () => {
-//     hand = ["2C", "3C", "4D", "5C", "6C"];
-//     replace = ["9C", "8C"];
-//     result = isFlush(hand, replace);
-//     expect(result.rank).toBe(4);
-//     expect(JSON.stringify(result.cards)).toBe('["9C","8C","3C","5C","6C"]');
-//   });
-
-//   it("Hand: 6C 6D 8C 2D 6H Deck: ", () => {
-//     hand = ["2C", "3C", "4D", "5C", "6H"];
-//     replace = ["9C", "8C", "AC"];
-//     result = isFlush(hand, replace);
-//     expect(result.rank).toBe(4);
-//     expect(JSON.stringify(result.cards)).toBe('["9C","8C","AC","3C","5C"]');
-//   });
-
-//   it("Hand: 6C 6D 8C 2D 6H Deck: ", () => {
-//     hand = ["2C", "3C", "4D", "5C", "6H"];
-//     replace = ["9C", "8C", "AC", "AD"];
-//     result = isFlush(hand, replace);
-//     expect(result.rank).toBe(15);
-//   });
-
-//   it("Hand: 6C 6D 8C 2D 6H Deck: ", () => {
-//     hand = ["2C", "3C", "4D", "5C", "6H"];
-//     replace = ["9C", "8C", "AC", "AD", "JC"];
-//     result = isFlush(hand, replace);
-//     expect(result.rank).toBe(15);
-//   });
-// });
+  it("isFlush - success", () => {
+    let result = cardLists.reduce(isFlush, { rank: 15 });
+    expect(result.rank).toBe(4);
+    expect(result.highCard).toBe("AD");
+    expect(result.cards).toEqual(["AD", "6D", "4D", "3D", "2D"]);
+  });
+});

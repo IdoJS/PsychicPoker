@@ -31,4 +31,4 @@ const isThree = (accumulator, currentCards, currentIndex, cards) => {
   return accumulator;
 };
 
-export { isThree };
+export { isThree, findThree };
