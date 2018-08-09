@@ -7,6 +7,8 @@ import { pickRandom } from "../../utils/randomDeck";
 import CardView from "./cardView";
 import { manageCards } from "../../logic/manageCards";
 
+import { sortByValue } from "../../utils/sortCards";
+
 class Poker extends React.Component {
   state = {
     hand: [],
@@ -22,6 +24,12 @@ class Poker extends React.Component {
   }
 
   render() {
+    let animation =
+      this.state.cardsBestHand.sort(sortByValue).toString() ===
+      this.state.hand.sort(sortByValue).toString()
+        ? "animation"
+        : "";
+
     return (
       <div className="pages poker">
         <div onClick={this.drawNewCards.bind(this)}>
@@ -34,6 +42,7 @@ class Poker extends React.Component {
             blinkList={this.state.handBlink}
             type="hand"
             removeCard={this.removeCard.bind(this)}
+            animation={animation}
           />
 
           <CardView

@@ -1,6 +1,5 @@
 import { asyncGetAllPossibleSubArrayFromHand } from "../utils/combinations";
-import { getValue } from "../utils/valuesConvertTable";
-
+import { sortByValue } from "../utils/sortCards";
 import { isHighCard } from "./rules/highCard";
 import { isOnePair } from "./rules/onePair";
 import { isTwoPair } from "./rules/twoPair";
@@ -11,10 +10,10 @@ import { isFullHouse } from "./rules/fullHouse";
 import { isFour } from "./rules/four";
 import { isStraightFlush } from "./rules/straightFlush";
 
-const sortByValue = (a, b) => {
-  return getValue(b) - getValue(a);
-};
-
+/**
+ * Add addiotional combinations for straight/straightFlush rules
+ * Ace can consider as 1 or 14
+ */
 const straightComboGenerator = data => {
   const { newHandDeckCombo, additionalCombosForStraight } = data;
   const newCardList = [];

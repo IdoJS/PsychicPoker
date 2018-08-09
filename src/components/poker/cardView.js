@@ -8,7 +8,7 @@ const CardView = props => {
       <div
         key={key}
         onClick={props.removeCard}
-        className={`card_view_border 
+        className={`card_view_border card_blink_${props.animation}
           ${
             props.blinkList.indexOf(value) !== -1
               ? `card_blink_${props.type}`
@@ -21,7 +21,7 @@ const CardView = props => {
   });
 
   return (
-    <div className="card_view">
+    <div className={`card_view`}>
       <div>
         <h3>{props.type}</h3>
       </div>
@@ -34,11 +34,13 @@ CardView.propTypes = {
   cards: PropTypes.array,
   removeCard: PropTypes.func,
   type: PropTypes.string,
-  blinkList: PropTypes.string
+  blinkList: PropTypes.array,
+  animation: PropTypes.string
 };
 
 CardView.defaultProps = {
-  blinkList: []
+  blinkList: [],
+  animation: ""
 };
 
 export default CardView;

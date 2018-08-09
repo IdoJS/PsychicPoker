@@ -109,6 +109,11 @@ body {
 .card_view {
   flex-direction: row;
   margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.card_view_animation {
+  animation: grow 2s linear infinite;
 }
 
 .card_view_cards_hand {
@@ -132,7 +137,11 @@ body {
 
 .card_blink_hand {
   background-color: red;
-  animation: blinker 2s linear infinite;
+  animation: blinker 1s linear infinite;
+}
+
+.card_blink_animation {
+  animation: grow 1s linear infinite;
 }
 
 .card_blink_deck {
@@ -142,5 +151,16 @@ body {
 @keyframes blinker {
   50% {
     opacity: 0;
+  }
+}
+
+@keyframes grow {
+  from {
+    -webkit-transform: scale(1);
+    background-color: blue;
+  }
+  to {
+    -webkit-transform: scale(1.1);
+    background-color: yellow;
   }
 }
