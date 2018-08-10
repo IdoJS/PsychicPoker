@@ -1,4 +1,4 @@
-import { getValue } from "./valuesConvertTable";
+import { getValue } from './valuesConvertTable';
 
 const sortByValue = (a, b) => {
   return getValue(b) - getValue(a);

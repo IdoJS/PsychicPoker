@@ -1,6 +1,6 @@
-import React from "react";
-import PropTypes from "prop-types";
-import constants from "../../utils/constants";
+import React from 'react';
+import PropTypes from 'prop-types';
+import constants from '../../utils/constants';
 
 const CardView = props => {
   const cards = props.cards.map((value, key) => {
@@ -12,7 +12,7 @@ const CardView = props => {
           ${
             props.blinkList.indexOf(value) !== -1
               ? `card_blink_${props.type}`
-              : ""
+              : ''
           }`}
       >
         <span data-type={props.type}>{value}</span>
@@ -40,7 +40,7 @@ CardView.propTypes = {
 
 CardView.defaultProps = {
   blinkList: [],
-  animation: ""
+  animation: ''
 };
 
 export default CardView;

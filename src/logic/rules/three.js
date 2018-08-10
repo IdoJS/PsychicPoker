@@ -1,4 +1,4 @@
-import { getValue } from "../../utils/valuesConvertTable";
+import { getValue } from '../../utils/valuesConvertTable';
 
 const findThree = (accumulator, currentValue, currentIndex, cards) => {
   let value = getValue(currentValue);

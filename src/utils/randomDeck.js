@@ -1,20 +1,20 @@
 const pickRandom = (numberOfCards = 10) => {
   const pokerValues = [
-    "A",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
-    "T",
-    "J",
-    "Q",
-    "K"
+    'A',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    'T',
+    'J',
+    'Q',
+    'K'
   ];
-  const pokerSuits = ["C", "D", "H", "S"];
+  const pokerSuits = ['C', 'D', 'H', 'S'];
 
   const deck = {
     uniqeCardsCheck: {},

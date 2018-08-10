@@ -1,9 +1,9 @@
-import React from "react";
-import ReactDOM from "react-dom";
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-import Poker from "./components/poker/index";
+import Poker from './components/poker/index';
 
-import "./styles.css";
+import './styles.css';
 
 function App() {
   return (
@@ -13,5 +13,5 @@ function App() {
   );
 }
 
-const rootElement = document.getElementById("root");
+const rootElement = document.getElementById('root');
 ReactDOM.render(<App />, rootElement);

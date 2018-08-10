@@ -7,12 +7,12 @@ const valueMapping = {
 };
 
 const backToCardValueMapping = {
-  14: "A",
-  13: "K",
-  12: "Q",
-  11: "J",
-  10: "T",
-  1: "A"
+  14: 'A',
+  13: 'K',
+  12: 'Q',
+  11: 'J',
+  10: 'T',
+  1: 'A'
 };
 
 const getValue = card => {

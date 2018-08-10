@@ -1,4 +1,4 @@
-import { getValue } from "../../utils/valuesConvertTable";
+import { getValue } from '../../utils/valuesConvertTable';
 
 const findStraight = (accumulator, currentValue, currentIndex, cards) => {
   if (!accumulator.isStraight) {

@@ -1,13 +1,13 @@
-import React from "react";
-import PropTypes from "prop-types";
-import constants from "../../utils/constants";
-import rankTable from "../../utils/rankTable";
-import { pickRandom } from "../../utils/randomDeck";
+import React from 'react';
+import PropTypes from 'prop-types';
+import constants from '../../utils/constants';
+import rankTable from '../../utils/rankTable';
+import { pickRandom } from '../../utils/randomDeck';
 
-import CardView from "./cardView";
-import { manageCards } from "../../logic/manageCards";
+import CardView from './cardView';
+import { manageCards } from '../../logic/manageCards';
 
-import { sortByValue } from "../../utils/sortCards";
+import { sortByValue } from '../../utils/sortCards';
 
 class Poker extends React.Component {
   state = {
@@ -27,14 +27,14 @@ class Poker extends React.Component {
     let animation =
       this.state.cardsBestHand.sort(sortByValue).toString() ===
       this.state.hand.sort(sortByValue).toString()
-        ? "animation"
-        : "";
+        ? 'animation'
+        : '';
 
     return (
       <div className="pages poker">
         <div onClick={this.drawNewCards.bind(this)}>
-          best hand {rankTable[this.state.bestHand]}{" "}
-          {this.state.cardsBestHand.join(", ")}
+          best hand {rankTable[this.state.bestHand]}{' '}
+          {this.state.cardsBestHand.join(', ')}
         </div>
         <div>
           <CardView
@@ -58,12 +58,12 @@ class Poker extends React.Component {
 
   removeCard(ev) {
     const value = ev.target.innerText;
-    const type = ev.target.getAttribute("data-type");
+    const type = ev.target.getAttribute('data-type');
     const { hand, deck } = this.state;
 
     if (deck.length > 0) {
       switch (type) {
-        case "hand":
+        case 'hand':
           // draw from deck
           let cardFromDeck = deck.shift();
           // remove from hand
@@ -76,7 +76,7 @@ class Poker extends React.Component {
             deck
           });
           break;
-        case "deck":
+        case 'deck':
           break;
         default:
           break;

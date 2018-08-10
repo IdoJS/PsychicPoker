@@ -1,4 +1,4 @@
-import { getValue } from "../../utils/valuesConvertTable";
+import { getValue } from '../../utils/valuesConvertTable';
 
 const isHighCard = (accumulator, currentCards, currentIndex, cards) => {
   if (accumulator.rank === 15) {

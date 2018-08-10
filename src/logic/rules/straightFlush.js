@@ -1,4 +1,4 @@
-import { getValue, getSuit } from "../../utils/valuesConvertTable";
+import { getValue, getSuit } from '../../utils/valuesConvertTable';
 
 const findStraightFlush = (accumulator, currentValue, currentIndex, cards) => {
   if (!accumulator.isFlush || !accumulator.isStraight) {
