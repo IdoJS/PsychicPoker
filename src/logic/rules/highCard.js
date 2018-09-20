@@ -1,6 +1,10 @@
 import { getValue } from '../../utils/valuesConvertTable';
 
-const isHighCard = (accumulator, currentCards, currentIndex, cards) => {
+/**
+ * input allPossiblePermutation : [array of array with possible hands] -> [[],[],[]]
+ * outpit object with rank 9 for successfully find hand with the fullfilled rule else rank 15.
+ */
+const isHighCard = (accumulator, currentCards, currentIndex, allPossiblePermutation) => {
   if (accumulator.rank === 15) {
     accumulator = {
       highCard: currentCards[0],

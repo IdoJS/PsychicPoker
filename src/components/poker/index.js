@@ -10,47 +10,36 @@ import { manageCards } from '../../logic/manageCards';
 import { sortByValue } from '../../utils/sortCards';
 
 class Poker extends React.Component {
-  state = {
-    hand: [],
-    deck: [],
-    handBlink: [],
-    deckBlink: [],
-    bestHand: 15,
-    cardsBestHand: []
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      hand: [],
+      deck: [],
+      handBlink: [],
+      deckBlink: [],
+      bestHand: 15,
+      cardsBestHand: []
+    };
+
+    this.removeCard = this.removeCard.bind(this);
+    this.drawNewCards = this.drawNewCards.bind(this);
+  }
 
   componentWillMount() {
     this.drawNewCards();
   }
 
   render() {
-    let animation =
-      this.state.cardsBestHand.sort(sortByValue).toString() ===
-      this.state.hand.sort(sortByValue).toString()
-        ? 'animation'
-        : '';
+    let animation = this.state.cardsBestHand.sort(sortByValue).toString() === this.state.hand.sort(sortByValue).toString() ? 'animation' : '';
 
     return (
       <div className="pages poker">
-        <div onClick={this.drawNewCards.bind(this)}>
-          best hand {rankTable[this.state.bestHand]}{' '}
-          {this.state.cardsBestHand.join(', ')}
+        <div onClick={this.drawNewCards}>
+          best hand {rankTable[this.state.bestHand]} {this.state.cardsBestHand.join(', ')}
         </div>
         <div>
-          <CardView
-            cards={this.state.hand}
-            blinkList={this.state.handBlink}
-            type="hand"
-            removeCard={this.removeCard.bind(this)}
-            animation={animation}
-          />
-
-          <CardView
-            cards={this.state.deck}
-            blinkList={this.state.deckBlink}
-            type="deck"
-            removeCard={this.removeCard.bind(this)}
-          />
+          <CardView cards={this.state.hand} blinkList={this.state.handBlink} type="hand" removeCard={this.removeCard} animation={animation} />
+          <CardView cards={this.state.deck} blinkList={this.state.deckBlink} type="deck" removeCard={this.removeCard} />
         </div>
       </div>
     );

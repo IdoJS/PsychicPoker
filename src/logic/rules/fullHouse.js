@@ -1,19 +1,10 @@
 import { getValue } from '../../utils/valuesConvertTable';
-
-const findRepeatsOfValues = (
-  accumulator,
-  currentValue,
-  currentIndex,
-  cards
-) => {
-  let value = getValue(currentValue);
-
-  accumulator[value] = !accumulator[value] ? 1 : accumulator[value] + 1;
-
-  return accumulator;
-};
-
-const isFullHouse = (accumulator, currentCards, currentIndex, cards) => {
+import { findRepeatsOfValues } from '../../utils/findRepearsOfValuesInHand';
+/**
+ * input allPossiblePermutation : [array of array with possible hands] -> [[],[],[]]
+ * outpit object with rank 3 for successfully find hand with the fullfilled rule else rank 15.
+ */
+const isFullHouse = (accumulator, currentCards, currentIndex, allPossiblePermutation) => {
   const repeatByValue = currentCards.reduce(findRepeatsOfValues, {});
   const fineIfFullHouse = {};
 

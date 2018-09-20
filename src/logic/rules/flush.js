@@ -5,7 +5,7 @@ const findFlush = (accumulator, currentValue, currentIndex, cards) => {
     return accumulator;
   }
 
-  let suit = getSuit(currentValue);
+  const suit = getSuit(currentValue);
 
   if (!accumulator.suit) {
     // initialize
@@ -21,7 +21,11 @@ const findFlush = (accumulator, currentValue, currentIndex, cards) => {
   return accumulator;
 };
 
-const isFlush = (accumulator, currentCards, currentIndex, cards) => {
+/**
+ * input allPossiblePermutation : [array of array with possible hands] -> [[],[],[]]
+ * outpit object with rank 4 for successfully find hand with the fullfilled rule else rank 15.
+ */
+const isFlush = (accumulator, currentCards, currentIndex, allPossiblePermutation) => {
   const isFlushResult = currentCards.reduce(findFlush, {
     isFlush: true
   });
@@ -33,9 +37,7 @@ const isFlush = (accumulator, currentCards, currentIndex, cards) => {
         highCard: isFlushResult.highCard,
         cards: currentCards
       };
-    } else if (
-      getValue(accumulator.highCard) < getValue(isFlushResult.highCard)
-    ) {
+    } else if (getValue(accumulator.highCard) < getValue(isFlushResult.highCard)) {
       accumulator.highCard = isFlushResult.highCard;
       accumulator.cards = currentCards;
     }

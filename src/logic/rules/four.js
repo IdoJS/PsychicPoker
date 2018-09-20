@@ -14,7 +14,11 @@ const findFour = (accumulator, currentValue, currentIndex, cards) => {
   return accumulator;
 };
 
-const isFour = (accumulator, currentCards, currentIndex, cards) => {
+/**
+ * input allPossiblePermutation : [array of array with possible hands] -> [[],[],[]]
+ * outpit object with rank 2 for successfully find hand with the fullfilled rule else rank 15.
+ */
+const isFour = (accumulator, currentCards, currentIndex, allPossiblePermutation) => {
   const isFourResult = currentCards.reduce(findFour, { rank: 15 });
 
   if (accumulator.rank === 15) {

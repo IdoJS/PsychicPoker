@@ -1,19 +1,11 @@
-import { getValue } from "../../utils/valuesConvertTable";
+import { getValue } from '../../utils/valuesConvertTable';
+import { findRepeatsOfValues } from '../../utils/findRepearsOfValuesInHand';
 
-const findRepeatsOfValues = (
-  accumulator,
-  currentValue,
-  currentIndex,
-  cards
-) => {
-  let value = getValue(currentValue);
-
-  accumulator[value] = !accumulator[value] ? 1 : accumulator[value] + 1;
-
-  return accumulator;
-};
-
-const isTwoPair = (accumulator, currentCards, currentIndex, cards) => {
+/**
+ * input allPossiblePermutation : [array of array with possible hands] -> [[],[],[]]
+ * outpit object with rank 2 for successfully find hand with the fullfilled rule else rank 15.
+ */
+const isTwoPair = (accumulator, currentCards, currentIndex, allPossiblePermutation) => {
   const repeatByValue = currentCards.reduce(findRepeatsOfValues, {});
   const findTwoPairs = {
     2: []

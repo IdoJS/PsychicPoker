@@ -1,5 +1,5 @@
-import { entryPoint } from "./bestHand";
-import { toFullCard } from "../utils/valuesConvertTable";
+import { entryPoint } from './bestHand';
+import { toFullCard } from '../utils/valuesConvertTable';
 
 const manageCards = (hand = [], deck = []) => {
   return new Promise(resolve => {

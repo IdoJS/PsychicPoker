@@ -7,15 +7,18 @@ const findStraight = (accumulator, currentValue, currentIndex, cards) => {
 
   let value = getValue(currentValue);
   if (accumulator.lastValue) {
-    accumulator.isStraight =
-      (accumulator.lastValue - 1).toString() === value.toString();
+    accumulator.isStraight = (accumulator.lastValue - 1).toString() === value.toString();
   }
 
   accumulator.lastValue = value;
   return accumulator;
 };
 
-const isStraight = (accumulator, currentCards, currentIndex, cards) => {
+/**
+ * input allPossiblePermutation : [array of array with possible hands] -> [[],[],[]]
+ * outpit object with rank 5 for successfully find hand with the fullfilled rule else rank 15.
+ */
+const isStraight = (accumulator, currentCards, currentIndex, allPossiblePermutation) => {
   const isStraightResult = currentCards.reduce(findStraight, {
     isStraight: true
   });

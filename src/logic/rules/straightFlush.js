@@ -11,8 +11,7 @@ const findStraightFlush = (accumulator, currentValue, currentIndex, cards) => {
     // initialize
     accumulator.suit = suit;
   } else {
-    accumulator.isStraight =
-      (accumulator.lastValue - 1).toString() === value.toString();
+    accumulator.isStraight = (accumulator.lastValue - 1).toString() === value.toString();
     accumulator.isFlush = accumulator.suit === suit;
   }
 
@@ -20,7 +19,11 @@ const findStraightFlush = (accumulator, currentValue, currentIndex, cards) => {
   return accumulator;
 };
 
-const isStraightFlush = (accumulator, currentCards, currentIndex, cards) => {
+/**
+ * input allPossiblePermutation : [array of array with possible hands] -> [[],[],[]]
+ * outpit object with rank 1 for successfully find hand with the fullfilled rule else rank 15.
+ */
+const isStraightFlush = (accumulator, currentCards, currentIndex, allPossiblePermutation) => {
   const isStraightFlushResult = currentCards.reduce(findStraightFlush, {
     isStraight: true,
     isFlush: true
